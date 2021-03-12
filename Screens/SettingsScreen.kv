@@ -2,7 +2,12 @@
 
 <SettingsScreen>:
     BoxLayout:
+        orientation: "vertical"
         Label:
             text: "Settings"
-        Counter:
-            id: settings-counter
+        Button:
+            text: "Create Database"
+            on_press: root.create_database()
+        Button:
+            text: "Generate Sample Data"
+            on_press: root.generate_data()
