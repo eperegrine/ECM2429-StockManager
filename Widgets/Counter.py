@@ -1,7 +1,8 @@
-from kivy.app import App, Builder
+from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
 Builder.load_file("Widgets/Counter.kv")
+
 
 class Counter(Widget):
 
