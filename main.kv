@@ -1,0 +1,39 @@
+# Define your background color Template
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+# Now you can simply Mix the `BackgroundColor` class with almost
+# any other widget... to give it a background.
+<BackgroundLabel@Label+BackgroundColor>
+    background_color: 0, 0, 0, 0
+
+<BackgroundBoxLayout@BoxLayout+BackgroundColor>
+    background_color: 0, 0, 0, 0
+
+<BackgroundStackLayout@StackLayout+BackgroundColor>
+    background_color: 0, 0, 0, 0
+
+<MainApp>:
+    StackLayout:
+        orientation: 'tb-lr'
+        size: root.size
+        BackgroundLabel:
+            text: "Main App"
+            font_size: 120
+            background_color: 1,1,1
+            color: 0,0,0
+            size_hint: 1, 0.2
+        BackgroundBoxLayout:
+            background_color: .2, .5, .4, 1
+            size_hint: 1, 0.8
+            orientation: "horizontal"
+            Counter:
+                id: counter_a
+                count: 100
+            Counter:
+                id: counter_b
