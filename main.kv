@@ -9,26 +9,13 @@
         text: 'Close me!'
         on_release: root.dismiss()
 <MainApp>:
-    StackLayout:
-        orientation: 'tb-lr'
+    BoxLayout:
+        orientation: "vertical"
         size: root.size
-        BackgroundLabel:
-            text: "Main App"
-            font_size: 120
-            background_color: 1,1,1
-            color: 0,0,0
-            size_hint: 1, 0.2
-        BackgroundBoxLayout:
-            background_color: .2, .5, .4, 1
-            size_hint: 1, 0.75
+        BoxLayout
+            id: nav-bar
+            size_hint_y: .1
             orientation: "horizontal"
-            Counter:
-                id: counter_a
-                count: 100
-            Counter:
-                id: counter_b
-        Button:
-            size_hint: 1, .05
-            text: "Alert Me"
-            background_color: 1, 0, 0, 1
-            on_press: Factory.MyPopup().open()
+            #The buttons are populated by the class to allow for more screens to be added easily
+        ScreenManager
+            id: screen-manager
