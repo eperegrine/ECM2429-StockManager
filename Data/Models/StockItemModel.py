@@ -7,6 +7,12 @@ class StockItemModel():
     location: str
     quantity: int
 
+    def __init__(self, id: int, location: str, quantity: int, product_id: int):
+        self.id = id
+        self.location = location
+        self.quantity = quantity
+        self.product_id = product_id
+
     @staticmethod
     def create_table(cur: Cursor):
         cur.execute('''

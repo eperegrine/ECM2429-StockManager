@@ -2,11 +2,23 @@ import sqlite3
 from sqlite3 import Cursor
 
 
-class ProductModel:
+class ProductModel():
     id: int
     name: str
     description: str
     target_stock: int
+
+    def __init__(self, name: str, description: str, target_stock: int, identifier: int = None, ):
+        self.id = identifier
+        self.name = name
+        self.description = description
+        self.target_stock = target_stock
+
+    def __str__(self) -> str:
+        return f"id: {self.id}\n" \
+               f"name: {self.name}\n" \
+               f"description {self.description}\n" \
+               f"target_stock {self.target_stock}\n" \
 
     @staticmethod
     def create_table(cur: Cursor):
