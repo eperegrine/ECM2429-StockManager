@@ -201,4 +201,4 @@ Temporary Items
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/StockManager.iml
 /.idea/vcs.xml
-/stock_manager.db
+**/stock_manager.db
