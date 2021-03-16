@@ -14,7 +14,7 @@ class StockRepository():
     db_manager: DatabaseManager
     product_repo: ProductRepository
 
-    def __init__(self, db_manager: DatabaseManager, product_repo):
+    def __init__(self, db_manager: DatabaseManager, product_repo: ProductRepository):
         self.db_manager = db_manager
         self.db_manager.ensure_initialised()
         self.product_repo = product_repo

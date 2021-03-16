@@ -16,6 +16,16 @@ class StockItemDalModel():
         self.quantity = quantity
         self.product_id = product_id
 
+    def __eq__(self, o: object) -> bool:
+        if not isinstance(o, StockItemDalModel):
+            return False
+        else:
+            return self.id == o.id and \
+                   self.location == o.location and \
+                   self.quantity == o.quantity and \
+                   self.product_id == o.product_id and \
+                   self.product == o.product
+
     @staticmethod
     def create_from_model(model: StockItemModel, product_repo: ProductRepository):
         dal_model = StockItemDalModel(model.id, model.location, model.quantity, model.product_id)
