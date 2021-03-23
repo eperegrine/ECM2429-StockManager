@@ -3,15 +3,14 @@ import sqlite3
 from sqlite3 import Connection
 from .Models import *
 
+import config
 database_models = [ProductModel, StockItemModel, OrderModel, ProductOrderModel, ShipmentModel]
-
-
 class DatabaseManager():
     """
     A class to manage the database connection
     handles initialising the database
     """
-    _file_location = "stock_manager.db"
+    _file_location = str(config.database_store)
 
     def ensure_initialised(self):
         """
@@ -66,8 +65,8 @@ class DatabaseManager():
     def generate_test_data(self):
         conn = self.get_connection()
         cur = conn.cursor()
-
-        sql_file_name = os.path.join("SQLScripts", "SampleData.sql")
+        sql_file_name = str(config.sample_data_file_location)
+        # sql_file_name = os.path.join("SQLScripts", "SampleData.sql")
         # sql_file_name = "/Users/emilyperegrine/Documents/Uni/Year-2/ECM2429-Assignment/StockManager/SQLScripts" \
                         # "/SampleData.sql"
         sql_file = open(sql_file_name)
@@ -80,4 +79,5 @@ class DatabaseManager():
 
         :return: Connection A connection to the database
         """
+        print ("Connecting to db at: " + self._file_location)
         return sqlite3.connect(self._file_location)

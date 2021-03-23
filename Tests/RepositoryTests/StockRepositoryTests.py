@@ -28,16 +28,6 @@ class StockRepositoryTests(unittest.TestCase):
     mock_product_repo.get_product(id) - get a product
     """
 
-    # def assertStockItem(self, result, expected):
-    #     self.assertEqual(result.id, id)
-    #     self.assertEqual(result.location, location)
-    #     self.assertEqual(result.quantity, quantity)
-    #     self.assertEqual(result.product_id, product_id)
-    #     self.assertEqual(result.product.id, product_id)
-    #     self.assertEqual(result.product.name, product.name)
-    #     self.assertEqual(result.product.description, product.description)
-    #     self.assertEqual(result.product.target_stock, product.target_stock)
-
     def test_get_stock_item_returns_stock_item(self):
         #Arrange
         id, location, quantity, product_id = (1, "A4", 4, 2)

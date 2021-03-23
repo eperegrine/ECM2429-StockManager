@@ -10,6 +10,13 @@
       "request": "launch",
       "program": "main.py",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Data Run",
+      "type": "python",
+      "request": "launch",
+      "program": "Data/run.py",
+      "console": "integratedTerminal"
     }
   ]
 }
