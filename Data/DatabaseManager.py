@@ -16,6 +16,7 @@ class DatabaseManager():
         """
         Ensures that the database exists by initialising it if it doesn't
         """
+        print ("Managing database at " + self._file_location)
         if not self.db_exists():
             self.initialise_database()
 
@@ -66,9 +67,6 @@ class DatabaseManager():
         conn = self.get_connection()
         cur = conn.cursor()
         sql_file_name = str(config.sample_data_file_location)
-        # sql_file_name = os.path.join("SQLScripts", "SampleData.sql")
-        # sql_file_name = "/Users/emilyperegrine/Documents/Uni/Year-2/ECM2429-Assignment/StockManager/SQLScripts" \
-                        # "/SampleData.sql"
         sql_file = open(sql_file_name)
         sql_as_string = sql_file.read()
         cur.executescript(sql_as_string)
@@ -79,5 +77,4 @@ class DatabaseManager():
 
         :return: Connection A connection to the database
         """
-        print ("Connecting to db at: " + self._file_location)
         return sqlite3.connect(self._file_location)

@@ -1,0 +1,20 @@
+#:import BackgroundColor Utils.BackgroundColor
+#:import Table Widgets
+<ProductsScreen>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        Label:
+            # TO BE REMOVED ANYWAY
+            padding_x: 25
+            text_size: root.width, None
+            text: "Products"
+            halign: "left"
+            size_hint_y: .1
+        Button:
+            id: add_button
+            text: "Add Product"
+            size_hint_y: .1
+        Table:
+            id: product_table
