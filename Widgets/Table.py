@@ -66,6 +66,7 @@ class Table(Widget):
 
         self.table_body.do_layout()
         self.scroll_view.update_from_scroll()
+        self.data = data
 
     def add_row(self, row_data):
         row = BoxLayout()

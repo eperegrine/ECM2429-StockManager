@@ -1,4 +1,7 @@
+from typing import Callable
+
 from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
@@ -10,10 +13,28 @@ Builder.load_file("Screens/ProductsScreen.kv")
 
 from Data.Repositories.DalModels import ProductDalModel
 
+
 def _create_label(text) -> Widget:
     lbl = Label()
     lbl.text = str(text)
     return lbl
+
+
+def _create_action_view(product: ProductDalModel, edit: Callable, remove: Callable) -> Widget:
+    # TODO: add view class
+    layout = BoxLayout()
+    layout.orientation = "horizontal"
+
+    edit_btn = Button()
+    edit_btn.text = "Edit"
+    edit_btn.on_press = lambda: edit(product)
+    remove_btn = Button()
+    remove_btn.text = "Remove"
+    remove_btn.on_press = lambda: remove(product)
+
+    layout.add_widget(edit_btn)
+    layout.add_widget(remove_btn)
+    return layout
 
 
 class ProductsScreen(Screen):
@@ -33,7 +54,7 @@ class ProductsScreen(Screen):
             TableField("Name", .2, lambda p: _create_label(p.name)),
             TableField("Target Stock", .2, lambda p: _create_label(p.target_stock)),
             TableField("Description", .3, lambda p: _create_label(p.description)),
-            TableField("Actions", .3, lambda p: _create_label("Hello, world!"))
+            TableField("Actions", .3, lambda p: _create_action_view(p, self.edit_product, self.remove_product))
         ]
 
         products: [ProductDalModel] = []
@@ -51,3 +72,11 @@ class ProductsScreen(Screen):
         self.products.append(product)
 
         self.table.set_data(self.products)
+
+    def edit_product(self, product: ProductDalModel):
+        print("Edit product", product.id)
+
+    def remove_product(self, product: ProductDalModel):
+        self.products.remove(product)
+        self.table.set_data(self.products)
+        print("Remove product", product.id)
