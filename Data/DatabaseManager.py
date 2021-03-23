@@ -67,9 +67,9 @@ class DatabaseManager():
         conn = self.get_connection()
         cur = conn.cursor()
 
-        # sql_file_name = os.path.join("SQLScripts", "SampleData.sql")
-        sql_file_name = "/Users/emilyperegrine/Documents/Uni/Year-2/ECM2429-Assignment/StockManager/SQLScripts" \
-                        "/SampleData.sql"
+        sql_file_name = os.path.join("SQLScripts", "SampleData.sql")
+        # sql_file_name = "/Users/emilyperegrine/Documents/Uni/Year-2/ECM2429-Assignment/StockManager/SQLScripts" \
+                        # "/SampleData.sql"
         sql_file = open(sql_file_name)
         sql_as_string = sql_file.read()
         cur.executescript(sql_as_string)
