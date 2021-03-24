@@ -12,9 +12,29 @@
             text: "Products"
             halign: "left"
             size_hint_y: .1
-        Button:
-            id: add_button
-            text: "Add Product"
+        BoxLayout:
+            size: root.size
+            pos: root.pos
+            orientation: "horizontal"
             size_hint_y: .1
+            Button:
+                id: add_button
+                text: "Add Product"
+            Button:
+                id: refresh_button
+                text: "Refresh"
         Table:
             id: product_table
+
+<ProductActionsTableCell>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "horizontal"
+        Button:
+            id: edit_button
+            text: "Edit"
+        Button:
+            id: remove_button
+            text: "Remove"
+

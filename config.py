@@ -4,7 +4,7 @@ import os
 
 #SOURCE: get_datadir was sourced from https://stackoverflow.com/a/61901696
 
-DEV_MODE = False
+DEV_MODE = True
 
 def get_datadir() -> pathlib.Path:
     """

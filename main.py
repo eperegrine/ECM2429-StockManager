@@ -66,6 +66,7 @@ class StockManagerApp(App):
     count = 0
 
     def build(self):
+        self.title = "Stock Manager App"
         layout = MainApp()
         return layout
 

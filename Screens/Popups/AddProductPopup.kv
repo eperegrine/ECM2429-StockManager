@@ -1,0 +1,50 @@
+<AddProductPopup@Popup>:
+    auto_dismiss: False
+    title: "Create Product"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: .2
+            Label:
+                text: "Name: "
+            TextInput:
+                id: name_input
+                multiline: False
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: .4
+            Label:
+                text: "Description: "
+            TextInput:
+                id: description_input
+                multiline: True
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: .2
+            Label:
+                id: target_stock_lbl
+                text: "Target Stock:\n0"
+            BoxLayout:
+                orientation: "horizontal"
+                Button:
+                    id: decrease_target_stock_btn
+                    text: "-"
+                    on_press: root.decrease_target_stock
+                Button:
+                    id: increase_target_stock_btn
+                    text: "+"
+                    on_press: root.increase_target_stock
+        Widget:
+            size_hint_y: .1
+            #Padding Box
+        BoxLayout:
+            size_hint_y: .1
+            orientation: "horizontal"
+            Button:
+                id: add_product_btn
+                text: 'Save'
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()

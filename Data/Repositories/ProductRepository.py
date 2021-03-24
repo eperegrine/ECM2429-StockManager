@@ -17,6 +17,11 @@ class ProductRepository():
         self.db_manager.ensure_initialised()
 
     def get_all_products(self) -> [ProductDalModel]:
+        """
+        Retrieves all products from the database and converts to DAL model
+
+        :return: A list of all products
+        """
         conn = self.db_manager.get_connection()
         cur = conn.cursor()
 
