@@ -1,7 +1,7 @@
-from Data.Models import ProductModel
+from Data.Models import Product
 
 
-class ProductDalModel():
+class ProductDalModel:
     id: int
     name: str
     description: str
@@ -23,5 +23,5 @@ class ProductDalModel():
                    self.target_stock == o.target_stock
 
     @staticmethod
-    def create_from_model(model: ProductModel):
+    def create_from_model(model: Product):
         return ProductDalModel(model.id, model.name, model.description, model.target_stock)

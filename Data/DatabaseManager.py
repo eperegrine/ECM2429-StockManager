@@ -1,10 +1,8 @@
 import os
-import sqlite3
-from sqlite3 import Connection
 from .Models import *
 
 import config
-database_models = [ProductModel, StockItemModel, OrderModel, ProductOrderModel, ShipmentModel]
+
 class DatabaseManager():
     """
     A class to manage the database connection
@@ -30,7 +28,7 @@ class DatabaseManager():
 
     def reset_database(self):
         """
-        Delete the database file
+        Delete the database file if it exists
         """
         if self.db_exists():
             os.remove(self._file_location)
@@ -42,39 +40,29 @@ class DatabaseManager():
         """
         self.reset_database()
 
-        conn = self.get_connection()
-        cur = conn.cursor()
+        db.connect()
 
-        print("Creating tables...")
-
-        for model in database_models:
-            print("Creating Table %s" % model)
-            model.create_table(cur)
-
-        print ("Tables Created\n\nCreating Relations")
-
-        # We setup the constraints afterwards to avoid issues
-        # with constraints needing a table that is not yet created
-        for model in database_models:
-            print("Added contraint for %s" % model)
-            model.add_constraints(cur)
-
-        print("Created Tables")
-
-        conn.commit()
+        db.create_tables(model_list)
 
     def generate_test_data(self):
-        conn = self.get_connection()
-        cur = conn.cursor()
-        sql_file_name = str(config.sample_data_file_location)
-        sql_file = open(sql_file_name)
-        sql_as_string = sql_file.read()
-        cur.executescript(sql_as_string)
-
-    def get_connection(self) -> Connection:
         """
-        Creates a connection to the database
+        Generates data useful for testing
 
-        :return: Connection A connection to the database
+        :return: None
         """
-        return sqlite3.connect(self._file_location)
+        iphone_x = Product(name="iPhone X", description="Apple iPhone\nwith FaceID", target_stock=3)
+        air_pods = Product(name="AirPods", description="Apple Wireless EarBuds", target_stock=10)
+        i_pad = Product(name="iPad", description="Apple tablet", target_stock = 5)
+
+        for product in [iphone_x, air_pods, i_pad]:
+            product.save()
+
+        stock = [
+            StockItem(product=iphone_x, location="A12", quantity=3),
+            StockItem(product=iphone_x, location="B3", quantity=1),
+            StockItem(product=air_pods, location="A4", quantity=10),
+            StockItem(product=i_pad, location="C2", quantity=3)
+        ]
+
+        for s in stock:
+            s.save()
