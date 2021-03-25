@@ -30,7 +30,7 @@ class DatabaseManager():
         """
         Delete the database file if it exists
         """
-        if self.db_exists():
+        if self.db_exists() and not self._file_location == ":memory:":
             os.remove(self._file_location)
 
     def initialise_database(self):

@@ -1,49 +1,38 @@
 import unittest
+from functools import wraps
 from unittest.mock import Mock, MagicMock
 
-from sqlite3 import Cursor, Connection
+from peewee import SqliteDatabase
+
 from Data import DatabaseManager
-from Data.Repositories import ProductRepository, StockRepository
+from Data.Repositories import StockRepository
 from Data.Repositories.DalModels import ProductDalModel, StockItemDalModel
 
+from Data.Models import StockItem, Product
+
+from .DbTestUtils import with_test_db
 
 class StockRepositoryTests(unittest.TestCase):
-    def setUp(self):
-        dbm = Mock(DatabaseManager)
-        con = Mock(Connection)
-        self.mock_cursor = Mock(Cursor)
-        con.cursor = MagicMock(return_value=self.mock_cursor)
-        dbm.get_connection = MagicMock(return_value=con)
 
-        self.db_manager = dbm
-        self.mock_product_repo = Mock(ProductRepository)
-        self.stock_repo = StockRepository(dbm, self.mock_product_repo)
-
-    """
-    Methods every test must mock
-    The database call:
-    <row> = (id: int, location: str, quantity: int, product_id: int)
-     - for single item: mock_cursor.fetchone() returns <row>
-     - for multiple items: mock_cursor.execute(query, params) list[<row>]
-    mock_product_repo.get_product(id) - get a product
-    """
-
+    @with_test_db((Product, StockItem))
     def test_get_stock_item_returns_stock_item(self):
-        #Arrange
-        id, location, quantity, product_id = (1, "A4", 4, 2)
-        product = ProductDalModel(product_id, "iPhone", "an iphone", 3)
-        stock_row = (id, location, quantity, product_id)
-        stock_item = StockItemDalModel(id, location, quantity, product_id)
-        stock_item.product = product
+        repo = StockRepository(DatabaseManager())
 
-        self.mock_cursor.fetchone = MagicMock(return_value=stock_row)
-        self.mock_product_repo.get_product = MagicMock(return_value=product)
+        db_product = Product(name="iPhone X", description="Apple iPhone\nwith FaceID", target_stock=3)
+        db_product.save()
+
+        db_stock = StockItem(location="A3", quantity=4, product=db_product)
+        db_stock.save()
+
+        expected = StockItemDalModel(db_stock.id, db_stock.location, db_stock.quantity, db_product.id)
+        expected.product = ProductDalModel(db_product.id, db_product.name,
+                                           db_product.description, db_product.target_stock)
 
         #Act
-        result = self.stock_repo.get_stock_item(id)
+        stock_item: StockItemDalModel = repo.get_stock_item(db_stock.id)
 
         #Assert
-        self.assertEqual(result, stock_item)
+        self.assertEqual(stock_item, expected)
 
 if __name__ == '__main__':
     unittest.main()

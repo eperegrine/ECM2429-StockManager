@@ -1,1 +1,2 @@
 from .StockRepositoryTests import StockRepositoryTests
+from .ProductRepositoryTests import ProductRepositoryTests
