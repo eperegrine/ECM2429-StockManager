@@ -1,15 +1,13 @@
 from typing import Tuple
 
 from Data.DatabaseManager import DatabaseManager
-from Data.Models import ProductModel
+from Data.Models import Product
 from Data.Repositories.DalModels import ProductDalModel
 
-
-def _create_product_from_row(row: Tuple) -> ProductModel:
-    return ProductModel(row[1], row[2], row[3], row[0])
-
-
 class ProductRepository():
+    """
+    Act as a buffer between the data layer and the application layer
+    """
     db_manager: DatabaseManager
 
     def __init__(self, db_manager: DatabaseManager):
@@ -22,18 +20,9 @@ class ProductRepository():
 
         :return: A list of all products
         """
-        conn = self.db_manager.get_connection()
-        cur = conn.cursor()
-
-        products = []
-
-        for row in cur.execute('SELECT * FROM Products;'):
-            model = _create_product_from_row(row)
-            products.append(ProductDalModel.create_from_model(model))
-
-        conn.close()
-
-        return products
+        products = Product.select()
+        dal_models = [ProductDalModel.create_from_model(p) for p in products]
+        return dal_models
 
     def get_product(self, id: int) -> ProductDalModel:
         """
@@ -42,15 +31,8 @@ class ProductRepository():
         :param id: The id of the product to retrieve
         :return: The product
         """
-        conn = self.db_manager.get_connection()
-        cur = conn.cursor()
-
-        cur.execute("SELECT id, name, description, target_level FROM Products WHERE id=?;", (id,))
-        res = cur.fetchone()
-        product_model = _create_product_from_row(res)
+        product_model = Product.get(Product.id == id)
         product = ProductDalModel.create_from_model(product_model)
-        conn.close()
-
         return product
 
     def create_product(self, name: str, description: str, target_stock: int) -> ProductDalModel:
@@ -62,20 +44,8 @@ class ProductRepository():
         :param target_stock: The ideal stock level
         :return: The new product
         """
-        conn = self.db_manager.get_connection()
-        cur = conn.cursor()
-
-        cur.execute("""
-            INSERT INTO Products (name, description, target_level)  VALUES 
-            (?, ?, ?);
-        """, (name, description, target_stock))
-
-        id = cur.lastrowid
-
-        product = ProductDalModel(id, name, description, target_stock)
-
-        conn.commit()
-        conn.close()
+        model = Product.create(name=name, description=description, target_stock=target_stock)
+        product = ProductDalModel.create_from_model(model)
 
         return product
 
@@ -86,17 +56,14 @@ class ProductRepository():
         :param product: The product to update with the new values set
         :return: The new product
         """
-        conn = self.db_manager.get_connection()
-        cur = conn.cursor()
 
-        cur.execute("""
-            UPDATE Products SET name = ?, description = ?, target_level = ? WHERE id = ?;
-        """, (product.name, product.description, product.target_stock, product.id))
+        model = Product.get(Product.id == product.id)
+        model.name = product.name
+        model.description = product.description
+        model.target_stock = product.target_stock
+        model.save()
 
-        conn.commit()
-        conn.close()
-
-        return product
+        return ProductDalModel.create_from_model(model)
 
     def delete_product(self, id: int):
         """
@@ -104,10 +71,5 @@ class ProductRepository():
 
         :param id: The id of the product to delete
         """
-        conn = self.db_manager.get_connection()
-        cur = conn.cursor()
-
-        cur.execute("DELETE FROM Products WHERE id = ?;", (id,))
-
-        conn.commit()
-        conn.close()
+        model = Product.get(Product.id == id)
+        model.delete_instance()
