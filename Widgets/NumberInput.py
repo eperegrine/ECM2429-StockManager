@@ -1,4 +1,5 @@
 import re
+from typing import Callable
 
 from kivy.uix.textinput import TextInput
 
@@ -43,24 +44,40 @@ class IntInput(TextInput):
             s = substring
         return super(IntInput, self).insert_text(s, from_undo=from_undo)
 
+
 class MinMaxIntInput(IntInput):
     """
     A input filed that is limited to only numbers
     """
 
     min: int
-    max: int
+    #sql int max
+    max: int = 2147483647
 
-    def __init__(self, min=None, max=None, **kwargs):
+    on_new_value: Callable[[int], None]
+
+    def __init__(self, min=None, max=2147483647, **kwargs):
         self.min = min
         self.max = max
+        self.on_new_value = lambda n: n
         super().__init__(**kwargs)
 
-    def insert_text(self, substring: str, from_undo=False):
-        super().insert_text(substring, from_undo)
+    def _set_line_text(self, line_num, text):
+        super()._set_line_text(line_num, text)
+        self.validate()
+
+    def paste(self):
+        super().paste()
+        self.validate()
+
+    def set_value(self, value: int):
+        self.text = str(value)
         self.validate()
 
     def validate(self):
+        if len(self.text) == 0:
+            self.on_new_value(None)
+            return
         num = int(self.text)
 
         if self.min is not None and num < self.min:
@@ -69,5 +86,5 @@ class MinMaxIntInput(IntInput):
             num = self.max
 
         print("validating", num)
+        self.on_new_value(num)
         self.text = str(num)
-

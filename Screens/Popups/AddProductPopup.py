@@ -7,8 +7,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
 from Data.Repositories.DalModels import ProductDalModel
-
-MAX_TARGET_STOCK = 100
+from Widgets import MinMaxIntInput
 
 Builder.load_file("Screens/Popups/AddProductPopup.kv")
 
@@ -17,9 +16,7 @@ class AddProductPopup(Popup):
     name_input: TextInput
     description_input: TextInput
 
-    target_stock_lbl: Label
-    increase_target_stock_btn: Button
-    decrease_target_stock_btn: Button
+    target_stock_input: MinMaxIntInput
 
     add_product_btn: Button
     add_product_callback: Callable[[str, str, int], None]
@@ -45,15 +42,10 @@ class AddProductPopup(Popup):
         self.description_input = self.ids["description_input"]
         self.description_input.bind(text=self.on_description_update)
 
-        self.target_stock_lbl = self.ids["target_stock_lbl"]
-
-        self.increase_target_stock_btn = self.ids["increase_target_stock_btn"]
-        self.increase_target_stock_btn.on_press = self.increase_target_stock
-
-        self.decrease_target_stock_btn = self.ids["decrease_target_stock_btn"]
-        self.decrease_target_stock_btn.on_press = self.decrease_target_stock
-
-        self.update_target_stock()
+        self.target_stock_input = self.ids["target_stock_input"]
+        self.target_stock_input.set_value(self.target_stock)
+        self.target_stock_input.on_new_value = self.on_target_stock_update
+        self.target_stock_input.min = 1
 
         self.update_add_btn()
 
@@ -65,20 +57,8 @@ class AddProductPopup(Popup):
         self.description = value
         self.update_add_btn()
 
-    def decrease_target_stock(self):
-        if self.target_stock > 0:
-            self.target_stock = self.target_stock - 1
-        self.update_target_stock()
-
-    def increase_target_stock(self):
-        if self.target_stock <= MAX_TARGET_STOCK - 1:
-            self.target_stock = self.target_stock + 1
-        self.update_target_stock()
-
-    def update_target_stock(self):
-        self.target_stock_lbl.text = f"Target Stock:\n{self.target_stock}"
-        self.decrease_target_stock_btn.disabled = self.target_stock < 1
-        self.increase_target_stock_btn.disabled = self.target_stock >= MAX_TARGET_STOCK
+    def on_target_stock_update(self, value: int):
+        self.target_stock = value
         self.update_add_btn()
 
     def update_add_btn(self):
@@ -87,7 +67,8 @@ class AddProductPopup(Popup):
     def is_model_valid(self):
         is_valid = len(self.name) > 0 and \
                    len(self.description) > 0 and \
-                   0 <= self.target_stock <= MAX_TARGET_STOCK
+                   self.target_stock is not None and \
+                   0 <= self.target_stock
         return is_valid
 
     def add_product(self):
@@ -114,6 +95,6 @@ class EditProductPopup(AddProductPopup):
         self.title = f"Edit Product #{self.original_product.id}"
         self.name_input.text = self.name
         self.description_input.text = self.description
-        self.update_target_stock()
+        self.target_stock_input.set_value(self.target_stock)
         self.update_add_btn()
         # self.add_product_btn.text = "Edit Product"
