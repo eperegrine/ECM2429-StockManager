@@ -85,6 +85,5 @@ class MinMaxIntInput(IntInput):
         elif self.max is not None and num > self.max:
             num = self.max
 
-        print("validating", num)
         self.on_new_value(num)
         self.text = str(num)

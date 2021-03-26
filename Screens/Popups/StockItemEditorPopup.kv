@@ -1,7 +1,7 @@
 #import MinMaxIntInput Widgets
-<AddProductPopup@Popup>:
+<StockItemEditorPopup@Popup>:
     auto_dismiss: False
-    title: "Create Product"
+    title: "Stock"
     BoxLayout:
         orientation: "vertical"
         size: root.size
@@ -9,25 +9,24 @@
             orientation: "vertical"
             size_hint_y: .2
             Label:
-                text: "Name: "
-            TextInput:
-                id: name_input
-                multiline: False
-        BoxLayout:
-            orientation: "vertical"
-            size_hint_y: .4
-            Label:
-                text: "Description: "
-            TextInput:
-                id: description_input
-                multiline: True
+                text: "Product: "
+            Spinner:
+                id: product_spinner
+                text: 'Choose Product'
         BoxLayout:
             orientation: "vertical"
             size_hint_y: .2
             Label:
-                text: "Target Stock (>= 1): "
+                text: "Location: "
+            TextInput:
+                id: location_input
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: .2
+            Label:
+                text: "Stock Level: "
             MinMaxIntInput:
-                id: target_stock_input
+                id: quantity_input
                 min: 1
         Widget:
             size_hint_y: .1
@@ -36,7 +35,7 @@
             size_hint_y: .1
             orientation: "horizontal"
             Button:
-                id: add_product_btn
+                id: save_btn
                 text: 'Save'
             Button:
                 text: 'Cancel'
