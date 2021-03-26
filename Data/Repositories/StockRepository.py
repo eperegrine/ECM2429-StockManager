@@ -30,3 +30,10 @@ class StockRepository():
 
     def get_total_product_stock(self, product_id: int) -> int:
         return Product.get_by_id(product_id).stock.count
+
+    def edit_stock(self, stock: StockItemDalModel) -> StockItemDalModel:
+        model: StockItem = StockItem.get_by_id(stock.id)
+        model.quantity = stock.quantity
+        model.location = stock.location
+        model.save()
+        return StockItemDalModel.create_from_model(model)

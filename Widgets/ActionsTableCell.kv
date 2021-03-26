@@ -1,0 +1,13 @@
+#:import BackgroundColor Utils.BackgroundColor
+
+<ActionsTableCell@BackgroundColor>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "horizontal"
+        Button:
+            id: edit_button
+            text: "Edit"
+        Button:
+            id: remove_button
+            text: "Remove"

@@ -102,8 +102,11 @@ class Table(Widget):
 
         for index, header in enumerate(self.headers):
             field = header.create_field(row_data, self.row_height)
-            if index % 2 == 1 and isinstance(field, BackgroundColor):
-                field.background_color = row_col_2
+            if isinstance(field, BackgroundColor):
+                if index % 2 == 1:
+                    field.background_color = row_col_2
+                else:
+                    field.background_color = row_col_1
             row.add_widget(field)
 
         self.table_body.add_widget(row)

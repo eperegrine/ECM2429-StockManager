@@ -30,12 +30,12 @@ if __name__ == '__main__':
     print ("All Stock: ")
     all_stock = stock_repo.get_all_stock_items()
     for si in all_stock:
-        print (si.id, si.product.name, si.location, si.quantity)
+        print (si.id, si.stock.name, si.location, si.quantity)
 
     print ("iPhone Stock")
     iphone_x_stock = stock_repo.get_stock_for_product(1)
     for si in iphone_x_stock:
-        print (si.id, si.product.name, si.location, si.quantity)
+        print (si.id, si.stock.name, si.location, si.quantity)
 
     total = stock_repo.get_total_product_stock(1)
     print("Total iPhone X stock is: ", total)

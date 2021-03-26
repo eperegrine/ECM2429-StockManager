@@ -9,7 +9,7 @@ from kivy.uix.scrollview import ScrollView
 
 from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from Screens.TableScreen import TableScreen
-from Widgets import Table, TableField, create_label_cell
+from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
 Builder.load_file("Screens/ProductsScreen.kv")
 
@@ -24,24 +24,9 @@ def _create_desc_label(text) -> Widget:
 
 
 def _create_action_view(product: ProductDalModel, edit: Callable, remove: Callable) -> Widget:
-    action_cell = ProductActionsTableCell()
+    action_cell = ActionsTableCell()
     action_cell.setup(product, edit, remove)
     return action_cell
-
-
-class ProductActionsTableCell(Widget):
-    edit_btn: Button
-    remove_btn: Button
-    product: ProductDalModel
-
-    def on_kv_post(self, base_widget):
-        self.edit_btn = self.ids["edit_button"]
-        self.remove_btn = self.ids["remove_button"]
-
-    def setup(self, product: ProductDalModel, edit: Callable, remove: Callable):
-        self.product = product
-        self.edit_btn.on_press = lambda: edit(product)
-        self.remove_btn.on_press = lambda: remove(product)
 
 
 class ProductsScreen(TableScreen):

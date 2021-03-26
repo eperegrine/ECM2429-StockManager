@@ -1,0 +1,20 @@
+<QuantityChangePopup@Popup>:
+    auto_dismiss: False
+    title: "Quantity Change"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        Label:
+            text: "Add to stock"
+            id: label
+        TextInput:
+            id: quantity_input
+            text: "1"
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                id: submit_btn
+                text: 'Submit'
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
