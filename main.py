@@ -3,7 +3,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
-from Screens import HomeScreen, ProductsScreen, SettingsScreen
+from Screens import HomeScreen, StockScreen, ProductsScreen, SettingsScreen
 
 Builder.load_file("main.kv")
 
@@ -40,6 +40,7 @@ class MainApp(Widget):
         self.nav_bar = self.ids["nav-bar"]
 
         self.add_screen(HomeScreen(name="home"), nav_button_name="Home")
+        self.add_screen(StockScreen(name="stock"), nav_button_name="Stock")
         self.add_screen(ProductsScreen(name="products"), nav_button_name="Products")
         self.add_screen(SettingsScreen(name="settings"), nav_button_name="Settings")
 

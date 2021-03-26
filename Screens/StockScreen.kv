@@ -1,6 +1,6 @@
 #:import BackgroundColor Utils.BackgroundColor
 #:import Table Widgets
-<ProductsScreen>:
+<StockScreen>:
     BoxLayout:
         size: root.size
         pos: root.pos
@@ -9,7 +9,7 @@
             # TO BE REMOVED ANYWAY
             padding_x: 25
             text_size: root.width, None
-            text: "Products"
+            text: "Stock"
             halign: "left"
             size_hint_y: .1
         BoxLayout:
@@ -19,22 +19,24 @@
             size_hint_y: .1
             Button:
                 id: add_button
-                text: "Add Product"
+                text: "Add Stock"
             Button:
                 id: refresh_button
                 text: "Refresh"
         Table:
             id: table
 
-<ProductActionsTableCell>:
+<StockQuantityTableCell>:
     BoxLayout:
         size: root.size
         pos: root.pos
         orientation: "horizontal"
         Button:
-            id: edit_button
-            text: "Edit"
-        Button:
             id: remove_button
-            text: "Remove"
-
+            text: "-"
+        Label:
+            id: quantity_label
+            text: "2"
+        Button:
+            id: add_button
+            text: "+"

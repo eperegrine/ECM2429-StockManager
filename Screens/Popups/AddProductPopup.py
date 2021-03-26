@@ -93,7 +93,6 @@ class AddProductPopup(Popup):
     def add_product(self):
         if self.is_model_valid():
             values = (self.name, self.description, self.target_stock)
-            print("Add Product", values)
             self.add_product_callback(*values)
             self.dismiss()
         else:
@@ -104,7 +103,6 @@ class EditProductPopup(AddProductPopup):
     original_product: ProductDalModel = None
 
     def __init__(self, product: ProductDalModel, edit_product_callback: Callable[[str, str, int], None], **kwargs):
-        print("INIT", product)
         self.original_product = product
         self.name = product.name
         self.description = product.description
@@ -113,7 +111,6 @@ class EditProductPopup(AddProductPopup):
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
-        print("kv_post")
         self.title = f"Edit Product #{self.original_product.id}"
         self.name_input.text = self.name
         self.description_input.text = self.description

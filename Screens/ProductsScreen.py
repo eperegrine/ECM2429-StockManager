@@ -8,7 +8,8 @@ from kivy.uix.widget import Widget
 from kivy.uix.scrollview import ScrollView
 
 from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
-from Widgets import Table, TableField
+from Screens.TableScreen import TableScreen
+from Widgets import Table, TableField, create_label_cell
 
 Builder.load_file("Screens/ProductsScreen.kv")
 
@@ -16,19 +17,10 @@ from Data.Repositories.DalModels import ProductDalModel
 from Data.Repositories import ProductRepository
 from Data import DatabaseManager
 
-from Utils import BackgroundLabel
-
-
-def _create_label(text) -> Widget:
-    lbl = BackgroundLabel()
-    lbl.text = str(text)
-    lbl.max_lines = 2
-    return lbl
-
 
 def _create_desc_label(text) -> Widget:
     # TODO: Improve multiple line handling
-    return _create_label(text)
+    return create_label_cell(text)
 
 
 def _create_action_view(product: ProductDalModel, edit: Callable, remove: Callable) -> Widget:
@@ -52,47 +44,42 @@ class ProductActionsTableCell(Widget):
         self.remove_btn.on_press = lambda: remove(product)
 
 
-class ProductsScreen(Screen):
-    table: Table
-    add_button: Button
-    refresh_button: Button
+class ProductsScreen(TableScreen):
+    headers: [TableField]
 
     products: [ProductDalModel]
 
     repo: ProductRepository
 
-    headers: [TableField]
-
-    def on_kv_post(self, base_widget):
-        self.table = self.ids["product_table"]
-        self.add_button = self.ids["add_button"]
-        self.refresh_button = self.ids["refresh_button"]
-
+    def __init__(self, **kw):
         self.repo = ProductRepository(DatabaseManager())
-
-        self.add_button.on_press = self.add_product
-        self.refresh_button.on_press = self.refresh_products
-
+        self.products = self.repo.get_all_products()
         headers = [
-            TableField("ID", .1, lambda p: _create_label(p.id)),
-            TableField("Name", .2, lambda p: _create_label(p.name)),
-            TableField("Target Stock", .2, lambda p: _create_label(p.target_stock)),
+            TableField("ID", .1, lambda p: create_label_cell(p.id)),
+            TableField("Name", .2, lambda p: create_label_cell(p.name)),
+            TableField("Target Stock", .2, lambda p: create_label_cell(p.target_stock)),
             TableField("Description", .3, lambda p: _create_desc_label(p.description)),
             TableField("Actions", .3, lambda p: _create_action_view(p, self.edit_product, self.remove_product))
         ]
-        self.headers = headers
+        super().__init__(headers, **kw)
 
-        self.products = self.repo.get_all_products()
+    def on_kv_post(self, base_widget):
+        super().on_kv_post(base_widget)
         self.table.setup(self.headers, self.products)
+        self.table.set_row_height(.2)
 
-    def refresh_products(self):
+    def on_refresh(self):
         self.products = self.repo.get_all_products()
         self.table.set_data(self.products)
 
-    def add_product(self):
+    def on_add(self):
         def create_product(name, description, target_stock):
             prod = self.repo.create_product(name, description, target_stock)
-            self.table.add_data_row(prod)
+            self.products.append(prod)
+            self.table.set_data(self.products)
+            # BUG: Row is added at incorrect size and not removed properly
+            # Therefore not using a more efficient method to add row
+            # self.table.add_data_row(prod)
 
         popup = AddProductPopup(create_product)
         popup.open()
@@ -103,13 +90,12 @@ class ProductsScreen(Screen):
             product.description = description
             product.target_stock = target_stock
             new_prod = self.repo.edit_product(product)
-            self.refresh_products()
+            self.on_refresh()
 
         popup = EditProductPopup(product, edit_product)
         popup.open()
 
     def remove_product(self, product: ProductDalModel):
-        self.products.remove(product)
-        self.table.set_data(self.products)
+        self.products = list(filter(lambda p: not p.id == product.id, self.products))
         self.repo.delete_product(product.id)
-        print("Remove product", product.id)
+        self.table.set_data(self.products)
