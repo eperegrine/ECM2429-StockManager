@@ -27,15 +27,19 @@
 
 <OrdersActionTableCell>:
     BoxLayout:
+        id: layout
         size: root.size
         pos: root.pos
-        orientation: "horizontal"
+        orientation: "vertical"
         Button:
             id: view_button
             text: "View Details"
         Button:
-            id: edit_button
-            text: "Edit"
+            id: pick_stock_button
+            text: "Open stock-picker"
         Button:
-            id: remove_button
-            text: "Remove"
+            id: ship_button
+            text: "Ship"
+        Button:
+            id: close_button
+            text: "Close"
