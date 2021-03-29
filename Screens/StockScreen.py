@@ -9,7 +9,7 @@ from kivy.uix.widget import Widget
 from Data import DatabaseManager
 from Data.Repositories.DalModels import StockItemDalModel
 from Screens.Popups import EditStockItemPopup, AddStockItemPopup
-from Utils import BackgroundColor, BackgroundBoxLayout
+from BackgroundColor import BackgroundColor, BackgroundBoxLayout
 from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
 from Data.Repositories import StockRepository

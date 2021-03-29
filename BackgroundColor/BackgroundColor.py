@@ -5,7 +5,7 @@ from kivy.uix.stacklayout import StackLayout
 from kivy.uix.widget import Widget
 from typing import Tuple
 
-kivy.app.Builder.load_file("Utils/BackgroundColor.kv")
+kivy.app.Builder.load_file("BackgroundColor/BackgroundColor.kv")
 
 
 class BackgroundColor(Widget):

@@ -5,7 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
-from Utils import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
+from BackgroundColor import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
 
 Builder.load_file("Widgets/Table.kv")
 
