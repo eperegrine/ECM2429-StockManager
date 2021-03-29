@@ -1,0 +1,41 @@
+#:import Table Widgets
+<OrdersScreen>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        Label:
+            # TO BE REMOVED ANYWAY
+            padding_x: 25
+            text_size: root.width, None
+            text: "Orders"
+            halign: "left"
+            size_hint_y: .1
+        BoxLayout:
+            size: root.size
+            pos: root.pos
+            orientation: "horizontal"
+            size_hint_y: .1
+            Button:
+                id: refresh_button
+                text: "Refresh Table"
+            Button:
+                id: sync_button
+                text: "Sync"
+        Table:
+            id: table
+
+<OrdersActionTableCell>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "horizontal"
+        Button:
+            id: view_button
+            text: "View Details"
+        Button:
+            id: edit_button
+            text: "Edit"
+        Button:
+            id: remove_button
+            text: "Remove"

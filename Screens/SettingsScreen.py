@@ -12,12 +12,10 @@ class SettingsScreen(Screen):
     def on_kv_post(self, base_widget):
         self.db_manager = DatabaseManager()
 
-    def create_database(self):
-        print("Creating Database")
-        self.db_manager.initialise_database()
-        print("Created Database")
+    def reset_database(self):
+        self.db_manager.reset_database()
 
     def generate_data(self):
         print("Generating Data")
         self.db_manager.generate_test_data()
-        print("Generating Data")
+        print("Generated Data")

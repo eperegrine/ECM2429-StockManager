@@ -3,6 +3,7 @@ from .Models import *
 
 import config
 
+
 class DatabaseManager():
     """
     A class to manage the database connection
@@ -14,7 +15,6 @@ class DatabaseManager():
         """
         Ensures that the database exists by initialising it if it doesn't
         """
-        print ("Managing database at " + self._file_location)
         if not self.db_exists():
             self.initialise_database()
 
@@ -28,10 +28,15 @@ class DatabaseManager():
 
     def reset_database(self):
         """
-        Delete the database file if it exists
+        Empty all data from the database
         """
         if self.db_exists() and not self._file_location == ":memory:":
-            os.remove(self._file_location)
+            ProductOrder.truncate_table()
+            Shipment.truncate_table()
+            Order.truncate_table()
+            StockItem.truncate_table()
+            Product.truncate_table()
+            # os.remove(self._file_location)
 
     def initialise_database(self):
         """
@@ -50,9 +55,10 @@ class DatabaseManager():
 
         :return: None
         """
+
         iphone_x = Product(name="iPhone X", description="Apple iPhone\nwith FaceID", target_stock=3)
         air_pods = Product(name="AirPods", description="Apple Wireless EarBuds", target_stock=10)
-        i_pad = Product(name="iPad", description="Apple tablet", target_stock = 5)
+        i_pad = Product(name="iPad", description="Apple tablet", target_stock=5)
 
         for product in [iphone_x, air_pods, i_pad]:
             product.save()
@@ -66,3 +72,16 @@ class DatabaseManager():
 
         for s in stock:
             s.save()
+
+        john_order_a = Order(customer_name="John Smith", status=1, storefront="test_data")
+        john_order_a.save()
+
+        john_order_a_phone = ProductOrder(product=iphone_x, price=699, order=john_order_a)
+        john_order_a_airpods = ProductOrder(product=air_pods, price=170, order=john_order_a)
+        john_order_a_phone.save()
+        john_order_a_airpods.save()
+
+        jane_order_a = Order(customer_name="Jane Doe", status=2, storefront="test_data")
+        jane_order_a.save()
+        jane_order_a_i_pad = ProductOrder(product=i_pad, price=499, order=jane_order_a)
+        jane_order_a_i_pad.save()

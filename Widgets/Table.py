@@ -62,7 +62,6 @@ class Table(Widget):
         self.scroll_view = self.ids['scroll_view']
 
     def setup(self, headers: [TableField], data: [object]):
-        print("Setup table size", len(data))
         self.headers = headers
 
         for header in headers:
