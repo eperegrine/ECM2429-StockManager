@@ -11,7 +11,7 @@ from kivy.uix.textinput import TextInput
 
 from Data import DatabaseManager
 from Data.Repositories import ProductRepository
-from Data.Repositories.DalModels import ProductDalModel
+from Data.Repositories.DalModels import ProductDalModel, StockItemDalModel
 from Widgets import MinMaxIntInput
 
 Builder.load_file("Screens/Popups/StockItemEditorPopup.kv")
@@ -49,8 +49,9 @@ class StockItemEditorPopup(Popup):
         self.location_input.bind(text=self.on_location)
         self.save_btn.on_press = self.on_save
 
-        if self.quantity is None:
-            self.quantity_input.set_value(0)
+        self.quantity_input.set_value(0 if self.quantity is None else self.quantity)
+        self.location_input.text = self.location
+
         self.update_ui()
 
     def setup_dropdown(self):
@@ -61,6 +62,9 @@ class StockItemEditorPopup(Popup):
             products_with_name = [p for p in prods if p.name == name]
             product = products_with_name[0]
             self.select_product(product)
+
+        if self.product is not None:
+            self.product_spinner.text = self.product.name
 
         self.product_spinner.bind(text=_select)
 
@@ -93,3 +97,22 @@ class StockItemEditorPopup(Popup):
             self.dismiss()
         else:
             print("Model invalid")
+
+
+class EditStockItemPopup(StockItemEditorPopup):
+    def __init__(self, stock_item: StockItemDalModel, save_callback: Callable[[int, str, int], None], **kwargs):
+        self.quantity = stock_item.quantity
+        self.location = stock_item.location
+        self.product = stock_item.product
+        super().__init__(save_callback, **kwargs)
+
+    def on_kv_post(self, base_widget):
+        super().on_kv_post(base_widget)
+        self.title = "Edit Stock Item"
+        self.product_spinner.disabled = True
+
+
+class AddStockItemPopup(StockItemEditorPopup):
+    def on_kv_post(self, base_widget):
+        super().on_kv_post(base_widget)
+        self.title = "Add Stock Item"

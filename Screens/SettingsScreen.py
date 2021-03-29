@@ -5,8 +5,8 @@ from Data.DatabaseManager import DatabaseManager
 
 Builder.load_file("Screens/SettingsScreen.kv")
 
-class SettingsScreen(Screen):
 
+class SettingsScreen(Screen):
     db_manager: DatabaseManager
 
     def on_kv_post(self, base_widget):

@@ -1,2 +1,2 @@
 from .AddProductPopup import AddProductPopup, EditProductPopup
-from .QuantityChangePopup import QuantityChangePopup
+from .StockItemEditorPopup import AddStockItemPopup, EditStockItemPopup

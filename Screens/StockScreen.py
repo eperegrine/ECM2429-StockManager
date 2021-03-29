@@ -8,7 +8,7 @@ from kivy.uix.widget import Widget
 
 from Data import DatabaseManager
 from Data.Repositories.DalModels import StockItemDalModel
-from Screens.Popups.StockItemEditorPopup import StockItemEditorPopup
+from Screens.Popups import EditStockItemPopup, AddStockItemPopup
 from Utils import BackgroundColor, BackgroundBoxLayout
 from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
@@ -104,11 +104,18 @@ class StockScreen(TableScreen):
         def create_stock(product_id: int, location: str, qty: int):
             self.repo.create_stock(product_id, location, qty)
             self.on_refresh()
-        popup = StockItemEditorPopup(create_stock)
+        popup = AddStockItemPopup(create_stock)
         popup.open()
 
     def edit_stock(self, stock: StockItemDalModel):
-        pass
+        def edit_stock(product_id: int, location: str, qty: int):
+            stock.product_id = product_id
+            stock.location = location
+            stock.quantity = qty
+            self.repo.edit_stock(stock)
+            self.on_refresh()
+        popup = EditStockItemPopup(stock, edit_stock)
+        popup.open()
 
     def remove_stock(self, stock: StockItemDalModel):
         self.repo.remove_item(stock.id)
