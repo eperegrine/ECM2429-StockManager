@@ -49,6 +49,8 @@ class StockItemEditorPopup(Popup):
         self.location_input.bind(text=self.on_location)
         self.save_btn.on_press = self.on_save
 
+        if self.quantity is None:
+            self.quantity_input.set_value(0)
         self.update_ui()
 
     def setup_dropdown(self):

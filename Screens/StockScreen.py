@@ -102,7 +102,8 @@ class StockScreen(TableScreen):
 
     def on_add(self):
         def create_stock(product_id: int, location: str, qty: int):
-            print(product_id, location, qty)
+            self.repo.create_stock(product_id, location, qty)
+            self.on_refresh()
         popup = StockItemEditorPopup(create_stock)
         popup.open()
 
@@ -110,4 +111,5 @@ class StockScreen(TableScreen):
         pass
 
     def remove_stock(self, stock: StockItemDalModel):
-        pass
+        self.repo.remove_item(stock.id)
+        self.on_refresh()
