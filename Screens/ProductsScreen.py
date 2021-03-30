@@ -11,7 +11,7 @@ from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from Screens.TableScreen import TableScreen
 from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
-Builder.load_file("Screens/ProductsScreen.kv")
+Builder.load_file("Views/Screens/ProductsScreen.kv")
 
 from Data.Repositories.DalModels import ProductDalModel
 from Data.Repositories import ProductRepository

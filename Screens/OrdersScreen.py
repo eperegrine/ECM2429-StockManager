@@ -17,7 +17,7 @@ from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
 from Screens.TableScreen import TableScreen
 
-Builder.load_file("Screens/OrdersScreen.kv")
+Builder.load_file("Views/Screens/OrdersScreen.kv")
 
 
 def _create_products_cell(o: OrderDalModel) -> Label:

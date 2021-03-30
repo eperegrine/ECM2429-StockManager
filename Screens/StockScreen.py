@@ -16,7 +16,7 @@ from Data.Repositories import StockRepository
 from Screens.Popups import QuantityChangePopup
 from Screens.TableScreen import TableScreen
 
-Builder.load_file("Screens/StockScreen.kv")
+Builder.load_file("Views/Screens/StockScreen.kv")
 
 
 def _create_qty_cell(si: StockItemDalModel, modify_stock_callback: Callable[[int], bool]):

@@ -9,7 +9,7 @@ from kivy.uix.textinput import TextInput
 
 from Data.Repositories.DalModels import ProductDalModel
 
-Builder.load_file("Screens/Popups/QuantityChangePopup.kv")
+Builder.load_file("Views/Screens/Popups/QuantityChangePopup.kv")
 
 
 class QuantityChangePopup(Popup):

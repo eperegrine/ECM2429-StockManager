@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 
 from Data.DatabaseManager import DatabaseManager
 
-Builder.load_file("Screens/SettingsScreen.kv")
+Builder.load_file("Views/Screens/SettingsScreen.kv")
 
 
 class SettingsScreen(Screen):

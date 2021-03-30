@@ -6,7 +6,7 @@ from kivy.lang import Builder
 
 from BackgroundColor import BackgroundColor
 
-Builder.load_file("Widgets/ActionsTableCell.kv")
+Builder.load_file("Views/Widgets/ActionsTableCell.kv")
 
 
 class ActionsTableCell(BackgroundColor):

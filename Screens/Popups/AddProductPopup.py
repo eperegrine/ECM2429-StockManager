@@ -9,7 +9,7 @@ from kivy.uix.textinput import TextInput
 from Data.Repositories.DalModels import ProductDalModel
 from Widgets import MinMaxIntInput
 
-Builder.load_file("Screens/Popups/AddProductPopup.kv")
+Builder.load_file("Views/Screens/Popups/AddProductPopup.kv")
 
 
 class AddProductPopup(Popup):

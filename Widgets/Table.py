@@ -7,7 +7,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from BackgroundColor import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
 
-Builder.load_file("Widgets/Table.kv")
+Builder.load_file("Views/Widgets/Table.kv")
 
 
 def create_label_cell(text) -> Widget:
