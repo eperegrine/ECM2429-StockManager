@@ -2,6 +2,7 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 
+import class_manager
 from Data.DatabaseManager import DatabaseManager
 from Services import OrderSyncService, storefronts
 
@@ -12,7 +13,7 @@ class SettingsScreen(Screen):
     db_manager: DatabaseManager
 
     def on_kv_post(self, base_widget):
-        self.db_manager = DatabaseManager()
+        self.db_manager = class_manager.get_instance(DatabaseManager)
 
     def reset_database(self):
         self.db_manager.reset_database()
@@ -22,7 +23,7 @@ class SettingsScreen(Screen):
             print("GOT ORDERS")
             print(succeful, failed, orders)
 
-        service = OrderSyncService(storefronts)
+        service = class_manager.get_instance(OrderSyncService)
         service.sync_orders(_completed)
 
     def generate_data(self):

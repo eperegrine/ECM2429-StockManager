@@ -1,15 +1,11 @@
 from typing import Callable
 
 from kivy.lang import Builder
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
-from kivy.uix.scrollview import ScrollView
 
 from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from Screens.TableScreen import TableScreen
-from Widgets import Table, TableField, create_label_cell, ActionsTableCell
+from Widgets import TableField, create_label_cell, ActionsTableCell
 
 Builder.load_file("Views/Screens/ProductsScreen.kv")
 
@@ -17,6 +13,7 @@ from Data.Repositories.DalModels import ProductDalModel
 from Data.Repositories import ProductRepository
 from Data import DatabaseManager
 
+import class_manager
 
 def _create_desc_label(text) -> Widget:
     # TODO: Improve multiple line handling
@@ -37,7 +34,8 @@ class ProductsScreen(TableScreen):
     repo: ProductRepository
 
     def __init__(self, **kw):
-        self.repo = ProductRepository(DatabaseManager())
+        # self.repo = ProductRepository(DatabaseManager())
+        self.repo = class_manager.get_instance(ProductRepository)
         self.products = self.repo.get_all_products()
         headers = [
             TableField("ID", .1, lambda p: create_label_cell(p.id)),

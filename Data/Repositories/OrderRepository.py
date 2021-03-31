@@ -1,9 +1,6 @@
-from typing import Tuple
-
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import Order, Product, ProductOrder
-from Data.Repositories import ProductRepository
-from Data.Repositories.DalModels import ProductDalModel, StockItemDalModel, OrderDalModel
+from Data.Repositories.DalModels import OrderDalModel
 
 
 class OrderRepository:

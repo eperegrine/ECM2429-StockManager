@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import Product
 from Data.Repositories.DalModels import ProductDalModel

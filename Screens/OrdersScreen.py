@@ -8,6 +8,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
+import class_manager
 from Data import DatabaseManager
 from Data.Repositories.DalModels import StockItemDalModel, OrderDalModel, OrderStatus
 from Data.Repositories.OrderRepository import OrderRepository
@@ -93,7 +94,7 @@ class OrdersScreen(TableScreen):
     sync_button: Button
 
     def __init__(self, **kw):
-        self.repo = OrderRepository(DatabaseManager())
+        self.repo = class_manager.get_instance(OrderRepository)
         self.orders = self.repo.get_all_orders()
         action_cell_creator = lambda o: _create_action_cell(o, self.view_order, self.pick_stock, self.ship_order,
                                                             self.close_order)

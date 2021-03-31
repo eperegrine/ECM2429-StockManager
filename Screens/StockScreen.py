@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
+import class_manager
 from Data import DatabaseManager
 from Data.Repositories.DalModels import StockItemDalModel
 from Screens.Popups import EditStockItemPopup, AddStockItemPopup
@@ -72,7 +73,7 @@ class StockScreen(TableScreen):
     stock: [StockItemDalModel]
 
     def __init__(self, **kw):
-        self.repo = StockRepository(DatabaseManager())
+        self.repo = class_manager.get_instance(StockRepository)
         self.stock = self.repo.get_all_stock_items()
         headers = [
             TableField("ID", .1, lambda s: create_label_cell(s.id)),
