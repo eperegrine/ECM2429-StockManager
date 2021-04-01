@@ -2,6 +2,7 @@ from typing import Tuple
 
 import kivy.app
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.widget import Widget
@@ -14,6 +15,10 @@ class BackgroundColor(Widget):
 
 
 class BackgroundLabel(BackgroundColor, Label):
+    pass
+
+
+class BackgroundButton(BackgroundColor, Button):
     pass
 
 

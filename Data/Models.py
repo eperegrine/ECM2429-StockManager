@@ -46,6 +46,7 @@ class ProductOrder(BaseModel):
     id = AutoField()
     product = ForeignKeyField(Product, backref="orders")
     price = IntegerField()
+    picking_status = IntegerField(default=1)
     order = ForeignKeyField(Order, backref="products")
 
 

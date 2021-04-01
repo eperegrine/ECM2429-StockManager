@@ -1,5 +1,16 @@
+from enum import Enum
+
 from Data.Models import ProductOrder
 from Data.Repositories.DalModels import ProductDalModel
+
+
+class PickingStatus(Enum):
+    NotPicked = 1
+    InProgress = 2
+    Done = 3
+
+    def __str__(self):
+        return self.name
 
 
 class ProductOrderDalModel:
@@ -9,16 +20,21 @@ class ProductOrderDalModel:
     id: int
     product: ProductDalModel
     price: int
+    status: PickingStatus
 
     # order_model
 
-    def __init__(self, id: int, product: ProductDalModel, price: int) -> None:
+    def __init__(self, id: int, product: ProductDalModel, price: int, status: PickingStatus) -> None:
         self.id = id
         self.price = price
         self.product = product
+        self.status = status
 
     @staticmethod
     def create_from_model(model: ProductOrder):
+        picking_status = PickingStatus(model.picking_status)
         return ProductOrderDalModel(model.id,
                                     ProductDalModel.create_from_model(model.product),
-                                    model.price)
+                                    model.price,
+                                    picking_status
+                                    )

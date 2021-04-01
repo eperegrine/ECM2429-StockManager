@@ -13,8 +13,11 @@ class OrderRepository:
         self.db_manager.ensure_initialised()
 
     def get_order(self, id: int) -> OrderDalModel:
-        model = Order.select().join(ProductOrder).where(Order.id == id).get()
+        model = self._get_order_model(id)
         return OrderDalModel.create_from_model(model)
+
+    def _get_order_model(self, id) -> Order:
+        return Order.select().join(ProductOrder).where(Order.id == id).get()
 
     def get_all_orders(self) -> [OrderDalModel]:
         orders = Order.select()
@@ -34,3 +37,9 @@ class OrderRepository:
             po.save()
 
         return OrderDalModel.create_from_model(o)
+
+    def confirm_order(self, o: OrderDalModel):
+        o = self._get_order_model(o.id)
+        if o.status == OrderStatus.Pending.value:
+            o.status = OrderStatus.Picking.value
+            o.save()
