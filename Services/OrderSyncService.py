@@ -6,7 +6,7 @@ from .Models import OrderApiModel
 from .OrderFetchService import OrderFetchService
 
 # "name": ("storefront", "email", [("product", "price")])
-ApiOrderDictionary = Dict[str, Tuple[str, str, List[Tuple[str, int]]]]
+ApiOrderDictionary = Dict[str, Tuple[OrderApiModel, List[Tuple[str, int]]]]
 
 
 def group_orders_by_name(orders) -> ApiOrderDictionary:
@@ -16,10 +16,10 @@ def group_orders_by_name(orders) -> ApiOrderDictionary:
         name = api_order.name
         product_tuple = (api_order.item_name, api_order.price)
         if name in order_dict:
-            store, email, products = order_dict[name]
-            order_dict[name] = store, email, [*products, product_tuple]
+            api_model, products = order_dict[name]
+            order_dict[name] = api_model, [*products, product_tuple]
         else:
-            order_dict[name] = api_order.storefront, api_order.email_address, [product_tuple]
+            order_dict[name] = api_order, [product_tuple]
     return order_dict
 
 
@@ -40,11 +40,12 @@ class OrderSyncService:
             order_dict = group_orders_by_name(orders)
             print("Made order dict", order_dict)
             for name, value in order_dict.items():
-                storefront, email, prod_tuple_list = value
+                api_order, prod_tuple_list = value
                 products: List[Tuple[ProductDalModel, int]] = [
                     (self.product_repo.get_or_create_by_name(name), price) for name, price in prod_tuple_list
                 ]
-                order = self.order_repo.create_order(name, email, storefront, products)
+                order = self.order_repo.create_order(name, api_order.email_address, api_order.address,
+                                                     api_order.storefront, products)
                 print("Order created", order)
             print("SYNCED ORDERS")
             on_finished()

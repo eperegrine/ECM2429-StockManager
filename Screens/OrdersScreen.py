@@ -137,7 +137,7 @@ class OrdersScreen(TableScreen):
 
     def view_order(self, o: OrderDalModel):
         order_screen = self.manager.get_screen("order_detail")
-        order_screen.ids.order_header_lbl.text = str(o.id)
+        order_screen.set_order(o)
         self.manager.transition.direction = 'up'
         self.manager.current = 'order_detail'
 

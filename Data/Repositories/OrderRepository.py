@@ -28,9 +28,9 @@ class OrderRepository:
 
         return dal_models
 
-    def create_order(self, customer_name: str, email_address: str, storefront: str,
+    def create_order(self, customer_name: str, email_address: str, address: str, storefront: str,
                      products: List[Tuple[ProductDalModel, int]]) -> OrderDalModel:
-        o = Order(customer_name=customer_name, email_address=email_address,
+        o = Order(customer_name=customer_name, email_address=email_address, address=address,
                   storefront=storefront, status=OrderStatus.Pending.value)
         o.save()
         for product, price in products:

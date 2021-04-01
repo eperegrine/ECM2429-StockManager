@@ -20,13 +20,15 @@ class OrderSyncServiceTests(unittest.TestCase):
 
         # Assert
         self.assertEqual(2, len(order_dict))
-        john_store, john_email, john_products = order_dict["John"]
-        self.assertEqual(storefront, john_store)
+        john_order, john_products = order_dict["John"]
+        self.assertEqual(storefront, john_order.storefront)
+        self.assertEqual("123 Fake St", john_order.address)
         self.assertEqual(2, len(john_products))
         self.assertEqual(("iPhone", 699), john_products[0])
         self.assertEqual(("AirPods", 170), john_products[1])
-        emily_store, emily_email, emily_products = order_dict["Emily"]
-        self.assertEqual(storefront, emily_store)
+        emily_order, emily_products = order_dict["Emily"]
+        self.assertEqual("265 Fake St", emily_order.address)
+        self.assertEqual(storefront, emily_order.storefront)
         self.assertEqual(1, len(emily_products))
         self.assertEqual(("iPad", 499), emily_products[0])
 
