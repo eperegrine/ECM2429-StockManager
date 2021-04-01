@@ -10,6 +10,14 @@ To run the app call, but only after installing dependencies
 python main.py
 ```
 
+The app depends on the webay api to be running at `http://localhost:8080`
+to run the app run 
+
+```shell
+python webay.py
+```
+
+
 ### Install Dependencies
 
 Create virtual env

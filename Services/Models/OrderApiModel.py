@@ -1,5 +1,6 @@
 class OrderApiModel:
     name: str
+    email_address: str
     address: str
     item_name: str
     price: int
@@ -7,6 +8,7 @@ class OrderApiModel:
 
     def __init__(self, name: str, address: str, item_name: str, price: int, storefront: str) -> None:
         self.name = name
+        self.email_address = ".".join(name.split(" ")) + "@fakemail.com"
         self.address = address
         self.item_name = item_name
         self.price = price

@@ -29,6 +29,7 @@ class StockItem(BaseModel):
 class Order(BaseModel):
     id = AutoField()
     customer_name = CharField()
+    email_address = CharField()
     """
     TODO: use Enum
     https://peewee.readthedocs.io/en/latest/peewee/models.html#creating-a-custom-field

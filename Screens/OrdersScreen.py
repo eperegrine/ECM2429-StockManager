@@ -18,7 +18,7 @@ Builder.load_file("Views/Screens/OrdersScreen.kv")
 
 def _create_products_cell(o: OrderDalModel) -> Label:
     prod_names = [p.product.name for p in o.products]
-    return create_label_cell(", ".join(prod_names))
+    return create_label_cell("\n".join(prod_names))
 
 
 def _create_action_cell(o: OrderDalModel, view: Callable, pick_stock: Callable, ship: Callable, close: Callable):
@@ -95,10 +95,10 @@ class OrdersScreen(TableScreen):
         self.orders = self.repo.get_all_orders()
         headers = [
             TableField("ID", .1, lambda o: create_label_cell(o.id)),
-            TableField("Customer Name", .2, lambda o: create_label_cell(o.customer_name)),
+            TableField("Customer", .25, lambda o: create_label_cell(o.customer_name + "\n" + o.email_address)),
             TableField("Status", .1, lambda o: create_label_cell(o.status)),
             TableField("Store", .1, lambda o: create_label_cell(o.storefront)),
-            TableField("Products", .2, lambda o: _create_products_cell(o)),
+            TableField("Products", .15, lambda o: _create_products_cell(o)),
             TableField("Actions", .2, lambda o: self.create_action_cell(o))
         ]
         super().__init__(headers, **kw)

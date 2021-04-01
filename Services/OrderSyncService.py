@@ -5,8 +5,8 @@ from Data.Repositories.DalModels import ProductDalModel
 from .Models import OrderApiModel
 from .OrderFetchService import OrderFetchService
 
-# "name": ("storefront", [("product", "price")])
-ApiOrderDictionary = Dict[str, Tuple[str, List[Tuple[str, int]]]]
+# "name": ("storefront", "email", [("product", "price")])
+ApiOrderDictionary = Dict[str, Tuple[str, str, List[Tuple[str, int]]]]
 
 
 def group_orders_by_name(orders) -> ApiOrderDictionary:
@@ -16,10 +16,10 @@ def group_orders_by_name(orders) -> ApiOrderDictionary:
         name = api_order.name
         product_tuple = (api_order.item_name, api_order.price)
         if name in order_dict:
-            store, products = order_dict[name]
-            order_dict[name] = store, [*products, product_tuple]
+            store, email, products = order_dict[name]
+            order_dict[name] = store, email, [*products, product_tuple]
         else:
-            order_dict[name] = api_order.storefront, [product_tuple]
+            order_dict[name] = api_order.storefront, api_order.email_address, [product_tuple]
     return order_dict
 
 
@@ -40,15 +40,13 @@ class OrderSyncService:
             order_dict = group_orders_by_name(orders)
             print("Made order dict", order_dict)
             for name, value in order_dict.items():
-                storefront, prod_tuple_list = value
+                storefront, email, prod_tuple_list = value
                 products: List[Tuple[ProductDalModel, int]] = [
                     (self.product_repo.get_or_create_by_name(name), price) for name, price in prod_tuple_list
                 ]
-                order = self.order_repo.create_order(name, storefront, products)
+                order = self.order_repo.create_order(name, email, storefront, products)
                 print("Order created", order)
-            print("SYCNED ORDRS")
-
-            # self.order_repo.create_orders(result)
+            print("SYNCED ORDERS")
             on_finished()
 
         self.fetch_service.fetch_orders(_completed)
