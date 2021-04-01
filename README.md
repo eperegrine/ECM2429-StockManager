@@ -2,7 +2,15 @@
 
 System Design and Programming Exercise for Systems Development 2 module
 
-## Install
+## Develop
+
+To run the app call, but only after installing dependencies
+
+```shell
+python main.py
+```
+
+### Install Dependencies
 
 Create virtual env
 
@@ -31,19 +39,30 @@ pip install -r requirements.txt
 or
 
 ```shell
-pip install kivy[base] kivy_examples
+pip install kivy[base] kivy_examples peeweee pycodestyle 
 ```
 
-# Develop
+### Testing
 
-To run the app call
+Tests are run with the python unittest module. 
+
+There is a github action that runs these automatically, but to run it localy call: 
 
 ```shell
-python main.py
+python -m unittest discover -s Tests
 ```
 
-To run the tests run this command:
+### Linting
 
+Linting is done using PEP8 via `pycodestyle`. 
+This is run on a github action but can also be done locally
+
+To run the lint call 
 ```shell
-python -m unittest discover -s Tests/
+pycodestyle --max-line-length=120 . 
+```
+
+For a more detailed view you can run
+```shell
+pycodestyle --show-source --show-pep8 --max-line-length=120 .
 ```

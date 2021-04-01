@@ -1,3 +1,5 @@
+from peewee import DoesNotExist
+
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import StockItem, Product
 from Data.Repositories.DalModels import StockItemDalModel
@@ -37,15 +39,18 @@ class StockRepository():
         :param qty: The number of product at the location
         :return: The stock DAL model
         """
+
         product = Product.get_by_id(product_id)
         if product is None:
             raise Exception("Product cannot be None when creating stock")
-        stock_item = StockItem.select().where(StockItem.product_id == product_id,
-                                              StockItem.location == location).get()
-        if stock_item:
+
+        try:
+            stock_item = StockItem.select().where(StockItem.product_id == product_id,
+                                                  StockItem.location == location).get()
+
             stock_item.quantity = qty
             stock_item.save()
-        else:
+        except DoesNotExist:
             stock_item = StockItem.create(location=location, quantity=qty, product=product)
 
         return StockItemDalModel.create_from_model(stock_item)
