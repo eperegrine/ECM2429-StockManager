@@ -1,10 +1,7 @@
-import sys
 from typing import Callable
 
 from kivy.lang import Builder
 from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
-from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.spinner import Spinner
 from kivy.uix.textinput import TextInput

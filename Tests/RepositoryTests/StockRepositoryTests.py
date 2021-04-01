@@ -1,16 +1,11 @@
 import unittest
-from functools import wraps
-from unittest.mock import Mock, MagicMock
-
-from peewee import SqliteDatabase
 
 from Data import DatabaseManager
+from Data.Models import StockItem, Product
 from Data.Repositories import StockRepository
 from Data.Repositories.DalModels import ProductDalModel, StockItemDalModel
-
-from Data.Models import StockItem, Product
-
 from .DbTestUtils import with_test_db
+
 
 class StockRepositoryTests(unittest.TestCase):
 
@@ -28,11 +23,12 @@ class StockRepositoryTests(unittest.TestCase):
         expected.product = ProductDalModel(db_product.id, db_product.name,
                                            db_product.description, db_product.target_stock)
 
-        #Act
+        # Act
         stock_item: StockItemDalModel = repo.get_stock_item(db_stock.id)
 
-        #Assert
+        # Assert
         self.assertEqual(stock_item, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

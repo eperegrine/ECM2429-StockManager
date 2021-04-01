@@ -1,7 +1,9 @@
+import peewee
+
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import Product
 from Data.Repositories.DalModels import ProductDalModel
-import peewee
+
 
 class ProductRepository():
     """

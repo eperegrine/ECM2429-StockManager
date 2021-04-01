@@ -2,7 +2,7 @@
 This module helps to avoid class instances being duplicated by providing
 a registry of instantiated objects
 """
-from typing import Any, TypeVar, Generic
+from typing import TypeVar, Generic
 
 from Data import DatabaseManager
 from Data.Repositories import StockRepository, ProductRepository, OrderRepository

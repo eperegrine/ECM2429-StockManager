@@ -5,7 +5,7 @@ from Data.Repositories.DalModels import ProductDalModel
 from .Models import OrderApiModel
 from .OrderFetchService import OrderFetchService
 
-#"name": ("storefront", [("product", "price")])
+# "name": ("storefront", [("product", "price")])
 ApiOrderDictionary = Dict[str, Tuple[str, List[Tuple[str, int]]]]
 
 

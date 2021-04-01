@@ -3,19 +3,15 @@ from typing import Callable
 from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
 import class_manager
-from Data import DatabaseManager
+from BackgroundColor import BackgroundColor
+from Data.Repositories import StockRepository
 from Data.Repositories.DalModels import StockItemDalModel
 from Screens.Popups import EditStockItemPopup, AddStockItemPopup
-from BackgroundColor import BackgroundColor, BackgroundBoxLayout
-from Widgets import Table, TableField, create_label_cell, ActionsTableCell
-
-from Data.Repositories import StockRepository
-from Screens.Popups import QuantityChangePopup
 from Screens.TableScreen import TableScreen
+from Widgets import TableField, create_label_cell, ActionsTableCell
 
 Builder.load_file("Views/Screens/StockScreen.kv")
 
@@ -105,6 +101,7 @@ class StockScreen(TableScreen):
         def create_stock(product_id: int, location: str, qty: int):
             self.repo.create_stock(product_id, location, qty)
             self.on_refresh()
+
         popup = AddStockItemPopup(create_stock)
         popup.open()
 
@@ -115,6 +112,7 @@ class StockScreen(TableScreen):
             stock.quantity = qty
             self.repo.edit_stock(stock)
             self.on_refresh()
+
         popup = EditStockItemPopup(stock, edit_stock)
         popup.open()
 

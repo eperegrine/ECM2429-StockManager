@@ -51,7 +51,7 @@ class MinMaxIntInput(IntInput):
     """
 
     min: int
-    #sql int max
+    # sql int max
     max: int = 2147483647
 
     on_new_value: Callable[[int], None]

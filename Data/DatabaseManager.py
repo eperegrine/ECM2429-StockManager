@@ -1,7 +1,7 @@
 import os
-from .Models import *
 
 import config
+from .Models import *
 
 
 class DatabaseManager():

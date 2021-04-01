@@ -1,18 +1,22 @@
-from kivy.app import App, Builder
-from kivy.uix.widget import Widget
+from kivy.app import App
+from kivy.lang.builder import Builder
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
-from Screens import HomeScreen, StockScreen, ProductsScreen, SettingsScreen, OrdersScreen
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.widget import Widget
+
 import config
+from Screens import HomeScreen, StockScreen, ProductsScreen, SettingsScreen, OrdersScreen
 
 if config.DEV_MODE:
     import logging
+
     logger = logging.getLogger('peewee')
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.DEBUG)
 
 Builder.load_file("main.kv")
+
 
 class MainApp(Widget):
     screen_order = []

@@ -2,7 +2,8 @@ from functools import wraps
 
 from peewee import SqliteDatabase
 
-#https://www.dvlv.co.uk/a-super-helpful-decorator-for-peeweeflask-unit-testing.html
+
+# https://www.dvlv.co.uk/a-super-helpful-decorator-for-peeweeflask-unit-testing.html
 def with_test_db(dbs: tuple):
     def decorator(func):
         @wraps(func)

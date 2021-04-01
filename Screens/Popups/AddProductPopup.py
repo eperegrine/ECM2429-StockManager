@@ -2,7 +2,6 @@ from typing import Callable
 
 from kivy.lang import Builder
 from kivy.uix.button import Button
-from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
@@ -49,11 +48,11 @@ class AddProductPopup(Popup):
 
         self.update_add_btn()
 
-    def on_name_update(self, instance, value):
+    def on_name_update(self, _, value):
         self.name = value
         self.update_add_btn()
 
-    def on_description_update(self, instance, value):
+    def on_description_update(self, _, value):
         self.description = value
         self.update_add_btn()
 

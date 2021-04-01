@@ -1,12 +1,13 @@
 import unittest
 from typing import List
 
-from Services.OrderSyncService import group_orders_by_name
 from Services.Models import OrderApiModel
+from Services.OrderSyncService import group_orders_by_name
+
 
 class OrderSyncServiceTests(unittest.TestCase):
     def test_group_orders_by_name_groups_orders(self):
-        #Arrange
+        # Arrange
         storefront = "test"
         orders: List[OrderApiModel] = [
             OrderApiModel("John", "123 Fake St", "iPhone", 699, storefront),
@@ -14,10 +15,10 @@ class OrderSyncServiceTests(unittest.TestCase):
             OrderApiModel("Emily", "265 Fake St", "iPad", 499, storefront)
         ]
 
-        #Act
+        # Act
         order_dict = group_orders_by_name(orders)
 
-        #Assert
+        # Assert
         self.assertEqual(2, len(order_dict))
         john_store, john_products = order_dict["John"]
         self.assertEqual(storefront, john_store)

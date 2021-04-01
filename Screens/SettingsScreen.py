@@ -1,10 +1,9 @@
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 
 import class_manager
 from Data.DatabaseManager import DatabaseManager
-from Services import OrderFetchService, storefronts
+from Services import OrderFetchService
 
 Builder.load_file("Views/Screens/SettingsScreen.kv")
 

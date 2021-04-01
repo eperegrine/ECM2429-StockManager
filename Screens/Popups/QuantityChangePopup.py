@@ -7,8 +7,6 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
-from Data.Repositories.DalModels import ProductDalModel
-
 Builder.load_file("Views/Screens/Popups/QuantityChangePopup.kv")
 
 

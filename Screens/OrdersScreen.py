@@ -3,21 +3,15 @@ from typing import Callable
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
-from kivy.uix.widget import Widget
 
 import class_manager
-from Data import DatabaseManager
-from Data.Repositories.DalModels import StockItemDalModel, OrderDalModel, OrderStatus
+from BackgroundColor import BackgroundColor
+from Data.Repositories.DalModels import OrderDalModel, OrderStatus
 from Data.Repositories.OrderRepository import OrderRepository
-from Screens.Popups import EditStockItemPopup, AddStockItemPopup
-from BackgroundColor import BackgroundColor, BackgroundBoxLayout
-from Services import OrderSyncService
-from Widgets import Table, TableField, create_label_cell, ActionsTableCell
-
 from Screens.TableScreen import TableScreen
+from Services import OrderSyncService
+from Widgets import TableField, create_label_cell
 
 Builder.load_file("Views/Screens/OrdersScreen.kv")
 
@@ -99,20 +93,21 @@ class OrdersScreen(TableScreen):
         self.repo = class_manager.get_instance(OrderRepository)
         self.sync_service = class_manager.get_instance(OrderSyncService)
         self.orders = self.repo.get_all_orders()
-        action_cell_creator = lambda o: _create_action_cell(o, self.view_order, self.pick_stock, self.ship_order,
-                                                            self.close_order)
         headers = [
             TableField("ID", .1, lambda o: create_label_cell(o.id)),
             TableField("Customer Name", .2, lambda o: create_label_cell(o.customer_name)),
             TableField("Status", .1, lambda o: create_label_cell(o.status)),
             TableField("Store", .1, lambda o: create_label_cell(o.storefront)),
             TableField("Products", .2, lambda o: _create_products_cell(o)),
-            TableField("Actions", .2, action_cell_creator)
+            TableField("Actions", .2, lambda o: self.create_action_cell(o))
         ]
         super().__init__(headers, **kw)
         self.sync_button = self.ids.sync_button
         self.sync_button.on_press = self.on_sync
         self.table.set_row_height(.25)
+
+    def create_action_cell(self, o):
+        return _create_action_cell(o, self.view_order, self.pick_stock, self.ship_order, self.close_order)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)

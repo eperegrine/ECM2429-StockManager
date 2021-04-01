@@ -6,14 +6,13 @@ from kivy.uix.widget import Widget
 from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from Screens.TableScreen import TableScreen
 from Widgets import TableField, create_label_cell, ActionsTableCell
+from Data.Repositories.DalModels import ProductDalModel
+from Data.Repositories import ProductRepository
+
+import class_manager
 
 Builder.load_file("Views/Screens/ProductsScreen.kv")
 
-from Data.Repositories.DalModels import ProductDalModel
-from Data.Repositories import ProductRepository
-from Data import DatabaseManager
-
-import class_manager
 
 def _create_desc_label(text) -> Widget:
     # TODO: Improve multiple line handling

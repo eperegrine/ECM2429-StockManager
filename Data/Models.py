@@ -17,6 +17,7 @@ class Product(BaseModel):
     # target_stock = IntegerField(constraints=Check('target_stock > -1'))
     target_stock = IntegerField()
 
+
 class StockItem(BaseModel):
     id = AutoField()
     product = ForeignKeyField(Product, backref="stock")
@@ -24,11 +25,12 @@ class StockItem(BaseModel):
     # quantity = IntegerField(constraints=Check('quantity > -1'))
     quantity = IntegerField()
 
+
 class Order(BaseModel):
     id = AutoField()
     customer_name = CharField()
     """
-    TODO: use Enum 
+    TODO: use Enum
     https://peewee.readthedocs.io/en/latest/peewee/models.html#creating-a-custom-field
     1 - Pending
     2 - Picking
@@ -37,7 +39,6 @@ class Order(BaseModel):
     """
     status = IntegerField()
     storefront = CharField(null=True, default="webay")
-    # MAYBE? closed = bool  -> add as check method
 
 
 class ProductOrder(BaseModel):

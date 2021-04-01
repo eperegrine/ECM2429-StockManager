@@ -1,8 +1,7 @@
 from typing import Callable
 
-from kivy.uix.button import Button
-from kivy.uix.widget import Widget
 from kivy.lang import Builder
+from kivy.uix.button import Button
 
 from BackgroundColor import BackgroundColor
 

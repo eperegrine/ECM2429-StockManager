@@ -3,6 +3,7 @@ from kivy.uix.widget import Widget
 
 Builder.load_file("Views/Widgets/Counter.kv")
 
+
 class Counter(Widget):
 
     def on_kv_post(self, base_widget):

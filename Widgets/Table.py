@@ -5,6 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
+
 from BackgroundColor import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
 
 Builder.load_file("Views/Widgets/Table.kv")
@@ -15,6 +16,7 @@ def create_label_cell(text) -> Widget:
     lbl.text = str(text)
     # lbl.max_lines = 2
     return lbl
+
 
 class TableField:
     label: str = "Label"
