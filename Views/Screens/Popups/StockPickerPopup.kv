@@ -1,0 +1,23 @@
+#import MinMaxIntInput Widgets
+<StockPickerPopup@Popup>:
+    auto_dismiss: False
+    title: "Stock Picker"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        Label:
+            id: order_label
+            text: "Order #001"
+            size_hint_y: .1
+        Button:
+            id: print_button
+            text: "Print List"
+            disabled: True
+            size_hint_y: .05
+        Table:
+            id: table
+            size_hint_y: .75
+        Button:
+            id: done_button
+            size_hint_y: .1
+            text: "Done"

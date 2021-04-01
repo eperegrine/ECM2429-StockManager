@@ -9,6 +9,7 @@ import class_manager
 from BackgroundColor import BackgroundColor
 from Data.Repositories.DalModels import OrderDalModel, OrderStatus
 from Data.Repositories.OrderRepository import OrderRepository
+from Screens.Popups.StockPickerPopup import StockPickerPopup
 from Screens.TableScreen import TableScreen
 from Services import OrderSyncService
 from Widgets import TableField, create_label_cell
@@ -115,7 +116,8 @@ class OrdersScreen(TableScreen):
         self.table.set_row_height(.25)
 
     def create_action_cell(self, o):
-        return _create_action_cell(o, self.view_order, self.confirm_order, self.pick_stock, self.ship_order, self.close_order)
+        return _create_action_cell(o, self.view_order, self.confirm_order, self.pick_stock,
+                                   self.ship_order, self.close_order)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
@@ -137,7 +139,11 @@ class OrdersScreen(TableScreen):
         pass
 
     def pick_stock(self, o: OrderDalModel):
-        pass
+        def _done():
+            print("Stock Picker done")
+            self.on_refresh()
+        popup = StockPickerPopup(o, _done)
+        popup.open()
 
     def ship_order(self, o: OrderDalModel):
         pass

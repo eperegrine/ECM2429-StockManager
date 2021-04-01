@@ -2,7 +2,8 @@ from typing import List, Tuple
 
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import Order, Product, ProductOrder
-from Data.Repositories.DalModels import OrderDalModel, ProductDalModel, OrderStatus
+from Data.Repositories.DalModels import OrderDalModel, ProductDalModel, \
+    OrderStatus, ProductOrderDalModel, PickingStatus
 
 
 class OrderRepository:
@@ -43,3 +44,36 @@ class OrderRepository:
         if o.status == OrderStatus.Pending.value:
             o.status = OrderStatus.Picking.value
             o.save()
+
+    def start_picking(self, po: ProductOrderDalModel):
+        po_model = ProductOrder.get_by_id(po.id)
+        po_model.picking_status = PickingStatus.InProgress.value
+        po_model.save()
+
+    def cancel_picking(self, po: ProductOrderDalModel):
+        po_model = ProductOrder.get_by_id(po.id)
+        po_model.picking_status = PickingStatus.NotPicked.value
+        po_model.save()
+
+    def pick_order_item(self, po: ProductOrderDalModel):
+        # TODO: reduce stock levels when picked
+        po_model: ProductOrder = ProductOrder.get_by_id(po.id)
+        po_model.picking_status = PickingStatus.Done.value
+        po_model.save()
+        self._check_if_order_picked(po_model.order)
+
+    def _check_if_order_picked(self, order: Order):
+        if not order.status == OrderStatus.Picking.value:
+            # Not picking so no need to check
+            print("ORDER NOT PICKING, NO NEED TO CHECK")
+            return
+        found_unpicked = False
+        for po in order.products:
+            found_unpicked = not po.picking_status == PickingStatus.Done.value
+            print(po.id, found_unpicked)
+            if found_unpicked:
+                break
+        if not found_unpicked:
+            print("UPDATING ORDER STATUS")
+            order.status = OrderStatus.Picked.value
+            order.save()

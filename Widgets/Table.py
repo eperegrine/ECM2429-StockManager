@@ -14,6 +14,7 @@ Builder.load_file("Views/Widgets/Table.kv")
 def create_label_cell(text) -> Widget:
     lbl = BackgroundLabel()
     lbl.halign = "center"
+    lbl.valign = "center"
     lbl.text = str(text)
     # lbl.max_lines = 2
     return lbl
