@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
 
 import config
-from Screens import *
+import Screens
 
 if config.DEV_MODE:
     import logging
@@ -50,12 +50,12 @@ class MainApp(Widget):
         self.sm = self.ids["screen-manager"]
         self.nav_bar = self.ids["nav-bar"]
 
-        self.add_screen(HomeScreen(name="home"), nav_button_name="Home")
-        self.add_screen(OrdersScreen(name="orders"), nav_button_name="Orders")
-        self.add_screen(OrderDetailScreen(name="order_detail"))
-        self.add_screen(StockScreen(name="stock"), nav_button_name="Stock")
-        self.add_screen(ProductsScreen(name="products"), nav_button_name="Products")
-        self.add_screen(SettingsScreen(name="settings"), nav_button_name="Settings")
+        self.add_screen(Screens.HomeScreen(name="home"), nav_button_name="Home")
+        self.add_screen(Screens.OrdersScreen(name="orders"), nav_button_name="Orders")
+        self.add_screen(Screens.OrderDetailScreen(name="order_detail"))
+        self.add_screen(Screens.StockScreen(name="stock"), nav_button_name="Stock")
+        self.add_screen(Screens.ProductsScreen(name="products"), nav_button_name="Products")
+        self.add_screen(Screens.SettingsScreen(name="settings"), nav_button_name="Settings")
 
     def add_screen(self, screen: Screen, nav_button_name=None):
         """
