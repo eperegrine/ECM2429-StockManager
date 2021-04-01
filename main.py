@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.widget import Widget
 
 import config
-from Screens import HomeScreen, StockScreen, ProductsScreen, SettingsScreen, OrdersScreen
+from Screens import *
 
 if config.DEV_MODE:
     import logging
@@ -40,8 +40,8 @@ class MainApp(Widget):
             return
 
         direction = "right" if current_index > new_index else "left"
-        new_screen = self.screen_list[new_index]
-        self.sm.switch_to(new_screen, direction=direction)
+        self.sm.transition.direction = direction
+        self.sm.current = screen_name
 
     def on_kv_post(self, base_widget):
         """
@@ -52,6 +52,7 @@ class MainApp(Widget):
 
         self.add_screen(HomeScreen(name="home"), nav_button_name="Home")
         self.add_screen(OrdersScreen(name="orders"), nav_button_name="Orders")
+        self.add_screen(OrderDetailScreen(name="order_detail"))
         self.add_screen(StockScreen(name="stock"), nav_button_name="Stock")
         self.add_screen(ProductsScreen(name="products"), nav_button_name="Products")
         self.add_screen(SettingsScreen(name="settings"), nav_button_name="Settings")

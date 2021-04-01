@@ -1,0 +1,20 @@
+<OrderDetailScreen>:
+    BoxLayout
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        Button:
+            text: "Back to all orders"
+            on_press:
+                root.manager.transition.direction = 'down'
+                root.manager.current = 'orders'
+        Label:
+            id: order_header_lbl
+            text: "Order Details #1234"
+        Label:
+            id: order_details
+            markup: True
+            text:
+                "[b][u]Customer[/u][/b]\n" + \
+                "[b]Name[/b]: John Smith\n" + \
+                "[b]Address[/b]: 123 Fake St"

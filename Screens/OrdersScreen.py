@@ -136,7 +136,10 @@ class OrdersScreen(TableScreen):
         pass
 
     def view_order(self, o: OrderDalModel):
-        pass
+        order_screen = self.manager.get_screen("order_detail")
+        order_screen.ids.order_header_lbl.text = str(o.id)
+        self.manager.transition.direction = 'up'
+        self.manager.current = 'order_detail'
 
     def pick_stock(self, o: OrderDalModel):
         def _done():
