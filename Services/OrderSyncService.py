@@ -1,48 +1,54 @@
-from threading import Thread
-from time import sleep
-from typing import List
+from typing import List, Callable, Dict, Tuple
 
-from .Models import OrderApiModel, Storefront
-from .Models.OrderFetchTyping import OrderSyncCallback
+from Data.Repositories import OrderRepository, ProductRepository
+from Data.Repositories.DalModels import ProductDalModel
+from .Models import OrderApiModel
+from .OrderFetchService import OrderFetchService
+
+#"name": ("storefront", [("product", "price")])
+ApiOrderDictionary = Dict[str, Tuple[str, List[Tuple[str, int]]]]
+
+
+def group_orders_by_name(orders) -> ApiOrderDictionary:
+    order_dict: ApiOrderDictionary = {}
+    print(f"GOT {len(orders)} ORDERS: ", orders, )
+    for api_order in orders:
+        name = api_order.name
+        product_tuple = (api_order.item_name, api_order.price)
+        if name in order_dict:
+            store, products = order_dict[name]
+            order_dict[name] = store, [*products, product_tuple]
+        else:
+            order_dict[name] = api_order.storefront, [product_tuple]
+    return order_dict
 
 
 class OrderSyncService:
-    storefronts: List[Storefront]
-    delay: float
+    fetch_service: OrderFetchService
+    order_repo: OrderRepository
+    product_repo: ProductRepository
 
-    def __init__(self, stores: List[Storefront], delay: float = .1):
-        self.delay = delay
-        self.storefronts = stores
+    def __init__(self, fetch_service: OrderFetchService, order_repo: OrderRepository, product_repo) -> None:
+        self.fetch_service = fetch_service
+        self.order_repo = order_repo
+        self.product_repo = product_repo
 
-    def sync_orders(self, on_complete: OrderSyncCallback) -> None:
-        def _thread():
-            completed: int = 0
-            result: List[OrderApiModel] = []
-            successful: int = 0
-            failed: int = 0
-            expected: int = len(self.storefronts)
+    def sync(self, on_finished: Callable):
+        # This could be improved by adding batching to avoid multiple db calls
+        # With multiple storefronts matching names could be an issue
+        def _completed(succesful: int, failed: int, orders: List[OrderApiModel]):
+            order_dict = group_orders_by_name(orders)
+            print("Made order dict", order_dict)
+            for name, value in order_dict.items():
+                storefront, prod_tuple_list = value
+                products: List[Tuple[ProductDalModel, int]] = [
+                    (self.product_repo.get_or_create_by_name(name), price) for name, price in prod_tuple_list
+                ]
+                order = self.order_repo.create_order(name, storefront, products)
+                print("Order created", order)
+            print("SYCNED ORDRS")
 
-            def _success(new_orders: List[OrderApiModel]):
-                nonlocal completed
-                nonlocal successful
-                completed += 1
-                successful += 1
-                result.extend(new_orders)
+            # self.order_repo.create_orders(result)
+            on_finished()
 
-            def _failure(request: object, response: object):
-                nonlocal completed
-                nonlocal failed
-                completed += 1
-                failed += 1
-
-            for store in self.storefronts:
-                store.fetch_orders(_success, _failure)
-
-            while completed < expected:
-                print("SLEEPING while fetching", completed, successful, failed)
-                sleep(self.delay)
-
-            on_complete(successful, failed, result)
-
-        x = Thread(target=_thread)
-        x.start()
+        self.fetch_service.fetch_orders(_completed)

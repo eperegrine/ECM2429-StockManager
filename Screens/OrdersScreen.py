@@ -14,6 +14,7 @@ from Data.Repositories.DalModels import StockItemDalModel, OrderDalModel, OrderS
 from Data.Repositories.OrderRepository import OrderRepository
 from Screens.Popups import EditStockItemPopup, AddStockItemPopup
 from BackgroundColor import BackgroundColor, BackgroundBoxLayout
+from Services import OrderSyncService
 from Widgets import Table, TableField, create_label_cell, ActionsTableCell
 
 from Screens.TableScreen import TableScreen
@@ -90,11 +91,13 @@ class OrdersActionTableCell(BackgroundColor):
 
 class OrdersScreen(TableScreen):
     orders: [OrderDalModel]
+    sync_service: OrderSyncService
 
     sync_button: Button
 
     def __init__(self, **kw):
         self.repo = class_manager.get_instance(OrderRepository)
+        self.sync_service = class_manager.get_instance(OrderSyncService)
         self.orders = self.repo.get_all_orders()
         action_cell_creator = lambda o: _create_action_cell(o, self.view_order, self.pick_stock, self.ship_order,
                                                             self.close_order)
@@ -108,7 +111,7 @@ class OrdersScreen(TableScreen):
         ]
         super().__init__(headers, **kw)
         self.sync_button = self.ids.sync_button
-        self.sync_button.on_press = lambda: print("Pressed")
+        self.sync_button.on_press = self.on_sync
         self.table.set_row_height(.25)
 
     def on_kv_post(self, base_widget):
@@ -118,6 +121,9 @@ class OrdersScreen(TableScreen):
     def on_refresh(self):
         self.orders = self.repo.get_all_orders()
         self.table.set_data(self.orders)
+
+    def on_sync(self):
+        self.sync_service.sync(lambda: self.on_refresh())
 
     def view_order(self, o: OrderDalModel):
         pass

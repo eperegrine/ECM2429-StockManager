@@ -6,18 +6,22 @@ from typing import Any, TypeVar, Generic
 
 from Data import DatabaseManager
 from Data.Repositories import StockRepository, ProductRepository, OrderRepository
-from Services import OrderSyncService, webay_storefront
+from Services import OrderFetchService, webay_storefront, OrderSyncService
 
-dbm = DatabaseManager()
+_dbm = DatabaseManager()
+_fetch_service = OrderFetchService([webay_storefront])
+_order_repo = OrderRepository(_dbm)
+_product_repo = ProductRepository(_dbm)
 
 registry = {
-    DatabaseManager: dbm,
+    DatabaseManager: _dbm,
     # Repositories
-    StockRepository: StockRepository(dbm),
-    ProductRepository: ProductRepository(dbm),
-    OrderRepository: OrderRepository(dbm),
+    StockRepository: StockRepository(_dbm),
+    ProductRepository: _product_repo,
+    OrderRepository: _order_repo,
     # Services
-    OrderSyncService: OrderSyncService([webay_storefront])
+    OrderFetchService: _fetch_service,
+    OrderSyncService: OrderSyncService(_fetch_service, _order_repo, _product_repo)
 }
 
 

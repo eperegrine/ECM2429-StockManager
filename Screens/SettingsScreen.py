@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import Screen
 
 import class_manager
 from Data.DatabaseManager import DatabaseManager
-from Services import OrderSyncService, storefronts
+from Services import OrderFetchService, storefronts
 
 Builder.load_file("Views/Screens/SettingsScreen.kv")
 
@@ -23,8 +23,8 @@ class SettingsScreen(Screen):
             print("GOT ORDERS")
             print(succeful, failed, orders)
 
-        service = class_manager.get_instance(OrderSyncService)
-        service.sync_orders(_completed)
+        service = class_manager.get_instance(OrderFetchService)
+        service.fetch_orders(_completed)
 
     def generate_data(self):
         print("Generating Data")

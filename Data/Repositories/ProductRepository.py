@@ -1,6 +1,7 @@
 from Data.DatabaseManager import DatabaseManager
 from Data.Models import Product
 from Data.Repositories.DalModels import ProductDalModel
+import peewee
 
 class ProductRepository():
     """
@@ -32,6 +33,15 @@ class ProductRepository():
         product_model = Product.get(Product.id == id)
         product = ProductDalModel.create_from_model(product_model)
         return product
+
+    def get_or_create_by_name(self, name: str, description: str = "from api", target_stock: int = 1) -> ProductDalModel:
+        product_model: Product
+        try:
+            product_model = Product.get(Product.name == name)
+        except peewee.DoesNotExist:
+            return self.create_product(name, description, target_stock)
+
+        return ProductDalModel.create_from_model(product_model)
 
     def create_product(self, name: str, description: str, target_stock: int) -> ProductDalModel:
         """
