@@ -78,9 +78,13 @@ class StockPickerPopup(Popup):
 
     def _create_actions_cell(self, po: ProductOrderDalModel) -> Widget:
         if po.status == PickingStatus.NotPicked:
-            btn = Button(text="Start Picking")
-            btn.on_press = lambda: self._start_picking(po)
-            return btn
+            stock = self.stock_repo.get_stock_for_product(po.product.id)
+            if len(stock) > 0:
+                btn = Button(text="Start Picking")
+                btn.on_press = lambda: self._start_picking(po)
+                return btn
+            else:
+                return create_label_cell("-")
         elif po.status == PickingStatus.InProgress:
             layout = BoxLayout(orientation="vertical")
             stop_btn = Button(text="Stop Picking")
@@ -94,6 +98,9 @@ class StockPickerPopup(Popup):
             return create_label_cell("-")
 
     def _create_locations_cell(self, po: ProductOrderDalModel) -> Label:
+        if po.status == PickingStatus.Done:
+            return create_label_cell("-")
+
         stock = self.stock_repo.get_stock_for_product(po.product.id)
         text = ""
         for si in stock:
@@ -101,7 +108,7 @@ class StockPickerPopup(Popup):
                 text += "\n"
             text += f"{si.quantity} at {si.location}"
         if len(stock) == 0:
-            text = "-"
+            text = "Out of Stock"
         return create_label_cell(text)
 
     def on_refresh(self):
