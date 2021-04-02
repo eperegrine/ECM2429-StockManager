@@ -5,7 +5,7 @@ from kivy.uix.screenmanager import Screen
 import class_manager
 from Data.Repositories import StockRepository
 from Data.Repositories.DalModels import OrderDalModel, OrderStatus, PickingStatus
-from Services import PrintService
+from Services import PrintService, MailService
 from Widgets.rich_text import bold, underline, size
 
 Builder.load_file("Views/Screens/OrderDetailScreen.kv")
@@ -20,11 +20,13 @@ class OrderDetailScreen(Screen):
 
     stock_repo: StockRepository
     print_service: PrintService
+    mail_service: MailService
 
     def __init__(self, **kw):
         super().__init__(**kw)
         self.stock_repo = class_manager.get_instance(StockRepository)
         self.print_service = class_manager.get_instance(PrintService)
+        self.mail_service = class_manager.get_instance(MailService)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
@@ -46,6 +48,12 @@ class OrderDetailScreen(Screen):
 
     def print_address(self):
         self.print_service.print_order_address_label(self.order)
+
+    def print_packing_list(self):
+        pass
+
+    def open_mail_client(self):
+        self.mail_service.open_blank_email(self.order.email_address)
 
     def update_ui(self):
         if self.order is not None:

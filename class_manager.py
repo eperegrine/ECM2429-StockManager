@@ -6,7 +6,7 @@ from typing import TypeVar, Generic
 
 from Data import DatabaseManager
 from Data.Repositories import StockRepository, ProductRepository, OrderRepository
-from Services import OrderFetchService, webay_storefront, OrderSyncService, PrintService
+from Services import OrderFetchService, webay_storefront, OrderSyncService, PrintService, MailService
 
 _dbm = DatabaseManager()
 _fetch_service = OrderFetchService([webay_storefront])
@@ -22,7 +22,8 @@ registry = {
     # Services
     OrderFetchService: _fetch_service,
     OrderSyncService: OrderSyncService(_fetch_service, _order_repo, _product_repo),
-    PrintService: PrintService()
+    PrintService: PrintService(),
+    MailService: MailService()
 }
 
 
