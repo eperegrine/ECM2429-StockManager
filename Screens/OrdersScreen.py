@@ -11,7 +11,7 @@ from Data.Repositories.DalModels import OrderDalModel, OrderStatus
 from Data.Repositories.OrderRepository import OrderRepository
 from Screens.Popups.StockPickerPopup import StockPickerPopup
 from Screens.TableScreen import TableScreen
-from Services import OrderSyncService
+from Services import OrderSyncService, MailService
 from Widgets import TableField, create_label_cell
 
 Builder.load_file("Views/Screens/OrdersScreen.kv")
@@ -97,10 +97,12 @@ class OrdersScreen(TableScreen):
 
     sync_button: Button
     repo: OrderRepository
+    mail_service: MailService
 
     def __init__(self, **kw):
         self.repo = class_manager.get_instance(OrderRepository)
         self.sync_service = class_manager.get_instance(OrderSyncService)
+        self.mail_service = class_manager.get_instance(MailService)
         self.orders = self.repo.get_all_orders()
         headers = [
             TableField("ID", .05, lambda o: create_label_cell(o.id)),
@@ -131,6 +133,7 @@ class OrdersScreen(TableScreen):
         self.sync_service.sync(lambda: self.on_refresh())
 
     def confirm_order(self, o: OrderDalModel):
+        self.mail_service.send_order_confirmed_email(o)
         self.repo.confirm_order(o)
         self.on_refresh()
         pass
