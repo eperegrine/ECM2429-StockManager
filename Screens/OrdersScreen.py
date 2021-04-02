@@ -155,6 +155,7 @@ class OrdersScreen(TableScreen):
     def ship_order(self, o: OrderDalModel):
         def _done(provider: str, code: str):
             print(provider, code)
+            # TODO: Update DB
             self.mail_service.send_shipping_confirmation(o, provider, code)
 
         popup = EnterShippingInfoPopup(_done)
