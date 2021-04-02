@@ -74,7 +74,7 @@ class DatabaseManager():
             s.save()
 
         john_order_a = Order(customer_name="John Smith", email_address="j.smith@fake.com",
-                             status=1, storefront="test_data")
+                             address="123 Fake St, Faketon, FK23 7FL", status=1, storefront="test_data")
         john_order_a.save()
 
         john_order_a_phone = ProductOrder(product=iphone_x, price=699, order=john_order_a)
@@ -83,7 +83,7 @@ class DatabaseManager():
         john_order_a_airpods.save()
 
         jane_order_a = Order(customer_name="Jane Doe", email_address="j.smith@fake.com",
-                             status=2, storefront="test_data")
+                             address="256 False Ln, Falseton, FL56 2FK", status=2, storefront="test_data")
         jane_order_a.save()
         jane_order_a_i_pad = ProductOrder(product=i_pad, price=499, order=jane_order_a)
         jane_order_a_i_pad.save()

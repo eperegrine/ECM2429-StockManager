@@ -28,3 +28,5 @@ toml==0.10.2
 urllib3==1.26.4
 virtualenv==20.4.3
 wrapt==1.12.1
+
+plyer~=2.0.0

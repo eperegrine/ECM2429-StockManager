@@ -4,7 +4,7 @@ System Design and Programming Exercise for Systems Development 2 module
 
 ## Develop
 
-To run the app call, but only after installing dependencies
+After installing the dependencies you can run
 
 ```shell
 python main.py
@@ -47,7 +47,14 @@ pip install -r requirements.txt
 or
 
 ```shell
-pip install kivy[base] kivy_examples peeweee pycodestyle 
+pip install kivy[base] kivy_examples peeweee pycodestyle plyer FPDF
+```
+
+On mac you may need to install `pyobjus` - plyer uses it to allow a native file dialog but for some reason 
+it does not automatically install
+
+```shell
+pip install pyobjus
 ```
 
 ### Testing
