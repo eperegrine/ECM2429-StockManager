@@ -5,36 +5,50 @@
         orientation: "vertical"
         Button:
             text: "Back to all orders"
-            size_hint_y: .05
+#            size_hint_y: .1
+            size_hint_min_y: cm(1)
+            size_hint_max_y: cm(1.5)
             on_press:
                 root.manager.transition.direction = 'down'
                 root.manager.current = 'orders'
         Label:
-            size_hint_y: .2
+#            size_hint_y: .2
             id: order_header_label
+            markup: True
             text: "Order Details #1234"
+            font_hinting: "light"
             font_size: 60
         Label:
             id: order_details_label
             markup: True
-            size_hint_y: .3
+            text_size: self.size
+            valign: "top"
+            halign: "left"
+#            size_hint_y: .3
+            padding_x: cm(1)
             text:
                 "[size=40][b][u]Customer[/u][/b][/size]\n" + \
                 "[b]Name[/b]: John Smith\n" + \
                 "[b]Address[/b]: 123 Fake St"
         BoxLayout:
             orientation: "horizontal"
-            size_hint_y: .1
+#            size_hint_y: .1
+            size_hint_min_y: cm(1)
+            size_hint_max_y: cm(2)
+            padding: cm(1), 0
             Button:
                 text: "Print Address Label"
             Button:
                 text: "Open Mail Client"
         Label:
             id: packing_list_label
-            size_hint_y: .4
+            padding_x: cm(1)
+#            size_hint_y: .4
+            font_hinting: "mono"
             markup: True
+            text_size: self.size
             halign: "left"
-            padding: 20, 0
+            valign: "top"
             text:
                 "[size=40][b][u]Items[/u][/b][/size]\n" + \
                 "iPhone - Picked\niPad - Out of Stock\n" + \

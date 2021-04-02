@@ -2,7 +2,10 @@ from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 
-from Data.Repositories.DalModels import OrderDalModel
+import class_manager
+from Data.Repositories import StockRepository
+from Data.Repositories.DalModels import OrderDalModel, OrderStatus, PickingStatus
+from rich_text import bold, underline, size
 
 Builder.load_file("Views/Screens/OrderDetailScreen.kv")
 
@@ -12,12 +15,20 @@ class OrderDetailScreen(Screen):
 
     order_header_label: Label
     order_details_label: Label
+    packing_list_label: Label
+
+    stock_repo: StockRepository
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.stock_repo = class_manager.get_instance(StockRepository)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
 
         self.order_header_label = self.ids.order_header_label
         self.order_details_label = self.ids.order_details_label
+        self.packing_list_label = self.ids.packing_list_label
 
         self.update_ui()
 
@@ -34,15 +45,45 @@ class OrderDetailScreen(Screen):
         if self.order is not None:
             self.set_header_text()
             self.set_details_text()
+            self.set_packing_list()
+            self.order_details_label.text_size = self.order_details_label.size
         else:
             print("ORDER DETAILS SCREEN HAS NO ORDER")
 
     def set_details_text(self):
-        self.order_details_label.text = f"""
-[b][u]Customer[/u][/b]
-[b]Name[/b]: {self.order.customer_name}
-[b]Email[/b]: {self.order.email_address}
-[b]Address[/b]: {self.order.address}"""
+        self.order_details_label.text = f"""{
+self.sub_title("Customer")}
+{bold("Name")}: {self.order.customer_name}
+{bold("Email")}: {self.order.email_address}
+{bold("Address")}: {self.order.address}"""
 
     def set_header_text(self):
-        self.order_header_label.text = f"Order Details #{self.order.id:04d}"
+        self.order_header_label.text = \
+            size(f"Order Details {bold(f'#{self.order.id:04d}')}", 70)
+
+    def set_packing_list(self):
+        product_list_text: str = ""
+        for po in self.order.products:
+            stock = []
+            status_msg = str(po.status)
+
+            if self.order.status in [OrderStatus.Pending, OrderStatus.Picking] and\
+                    po.status in [PickingStatus.NotPicked, PickingStatus.InProgress]:
+                # if the order and the product have not been picked list the stock
+                stock = self.stock_repo.get_stock_for_product(po.product.id)
+                if len(stock) == 0:
+                    status_msg += " - Out of Stock"
+
+            product_list_text += f"{po.product.name}: {status_msg}\n"
+            if len(stock) > 0:
+                print("STOCK NOT EMPTY")
+                for stock_item in stock:
+                    product_list_text += (" " * 4) + f"- {stock_item.quantity:3} at {stock_item.location}\n"
+
+        self.packing_list_label.text = f"""{
+self.sub_title("Items")}
+{product_list_text}
+"""
+
+    def sub_title(self, text):
+        return size(bold(underline(text)), 50)

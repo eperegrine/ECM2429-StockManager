@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List
 
 from Data.Models import Order
 from Data.Repositories.DalModels import ProductOrderDalModel
@@ -22,7 +23,7 @@ class OrderDalModel:
     address: str
     status: OrderStatus
     storefront: str
-    products: [ProductOrderDalModel]
+    products: List[ProductOrderDalModel]
 
     def __init__(self, id: int, customer_name: str, email_address: str, address: str, status: OrderStatus,
                  storefront: str, products: [ProductOrderDalModel]) -> None:
