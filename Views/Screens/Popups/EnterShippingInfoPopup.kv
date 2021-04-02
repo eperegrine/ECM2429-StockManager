@@ -1,0 +1,24 @@
+<EnterShippingInfoPopup@Popup>:
+    auto_dismiss: False
+    title: "Enter Shipping Info"
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        Label:
+            text: "Provider: "
+        TextInput:
+            id: provider_input
+            hint_text: "The shipping company name"
+        Label:
+            text: "Tracking Code: "
+        TextInput:
+            id: tracking_code_input
+            hint_text: "The code used to track the parcel"
+        BoxLayout:
+            orientation: "horizontal"
+            Button:
+                id: submit_btn
+                text: 'Submit'
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()

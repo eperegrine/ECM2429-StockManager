@@ -9,6 +9,7 @@ import class_manager
 from BackgroundColor import BackgroundColor
 from Data.Repositories.DalModels import OrderDalModel, OrderStatus
 from Data.Repositories.OrderRepository import OrderRepository
+from Screens.Popups import EnterShippingInfoPopup
 from Screens.Popups.StockPickerPopup import StockPickerPopup
 from Screens.TableScreen import TableScreen
 from Services import OrderSyncService, MailService
@@ -152,7 +153,12 @@ class OrdersScreen(TableScreen):
         popup.open()
 
     def ship_order(self, o: OrderDalModel):
-        pass
+        def _done(provider: str, code: str):
+            print(provider, code)
+            self.mail_service.send_shipping_confirmation(o, provider, code)
+
+        popup = EnterShippingInfoPopup(_done)
+        popup.open()
 
     def close_order(self, o: OrderDalModel):
         pass
