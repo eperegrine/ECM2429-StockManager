@@ -30,3 +30,4 @@ virtualenv==20.4.3
 wrapt==1.12.1
 
 plyer~=2.0.0
+fpdf~=1.7.2

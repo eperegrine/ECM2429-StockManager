@@ -33,8 +33,9 @@ class PDF(FPDF):
         self.cell(w=297.0/2, h=40.0, align='C', txt=text, border=0)
 
 
-class AddressLabel(FPDF):
+class AddressLabelPDF(FPDF):
     def add_order(self, order: OrderDalModel):
+        self.add_page()
         self.set_xy(0.0, 0.0)
         self.set_font('Arial', 'B', 16)
         pad_x = 5
@@ -63,13 +64,45 @@ class AddressLabel(FPDF):
         self.rect(half_pad, half_pad, width + pad_x*2, current_line)
 
 
+class PackingListPDF(FPDF):
+    def add_order(self, order: OrderDalModel):
+        self.add_page()
+        self.set_xy(0.0, 0.0)
+        self.set_font('Arial', 'B', 16)
+        pad_x = 5
+        line_pad = 7
+        start_height=10
+        self.text(pad_x, start_height, f"ORDER: #{order.id:04d}")
+        self.set_font('Arial', '', 14)
+        current_line = start_height + line_pad + 2
+        self.text(pad_x, current_line, order.customer_name)
+        current_line += line_pad
+        self.text(pad_x, current_line, f"Ordered via {order.storefront}")
+        current_line += line_pad
+        self.text(pad_x, current_line, f"Shipping to:")
+
+        address_lines = order.address.split(",")
+        for line in address_lines:
+            current_line += line_pad
+            self.text(pad_x, current_line, line.strip())
+
+        products = order.products
+        current_line += line_pad*1.5
+        self.set_font('Arial', 'b', 14)
+        self.text(pad_x, current_line, f"Products:")
+        current_line += line_pad/4
+        self.set_font('Arial', '', 14)
+        for po in products:
+            current_line += line_pad
+            self.text(pad_x, current_line, f"{po.product.name} £{po.price:.2f}")
+
+
 class PrintService:
 
     def _get_output_pdf_name(self, filename="printme"):
-        # doc_dir = storagepath.get_documents_dir()
-        # reccomended_path = os.path.join(doc_dir, filename)
-        # path = filechooser.choose_dir(multiple=False, path=reccomended_path, onselection=_file_chosen)
-        path = "/Users/emilyperegrine/Documents/Uni/Year-2/ECM2429-Assignment/print_files"
+        doc_dir = storagepath.get_documents_dir()
+        reccomended_path = os.path.join(doc_dir, filename)
+        path = filechooser.choose_dir(multiple=False, path=reccomended_path)
         if isinstance(path, List):
             path = path[0]
         print(path)
@@ -80,8 +113,16 @@ class PrintService:
     def print_order_address_label(self, order: OrderDalModel):
         output_file = self._get_output_pdf_name(f"Order{order.id}-AddressLabel")
         print("PRINTING ADDRESS LABEL", output_file)
-        pdf = AddressLabel(format="A5")
-        pdf.add_page()
+        pdf = AddressLabelPDF(format="A5")
+        pdf.add_order(order)
+        pdf.output(output_file, 'F')
+        _sys_open_file(output_file)
+
+    def print_order_packing_list(self, order: OrderDalModel):
+        output_file = self._get_output_pdf_name(f"Order{order.id}-PackingList")
+        print("PRINTING ADDRESS LABEL", output_file)
+        pdf = PackingListPDF(format="A5")
+        # pdf.add_page()
         pdf.add_order(order)
         pdf.output(output_file, 'F')
         _sys_open_file(output_file)

@@ -50,7 +50,7 @@ class OrderDetailScreen(Screen):
         self.print_service.print_order_address_label(self.order)
 
     def print_packing_list(self):
-        pass
+        self.print_service.print_order_packing_list(self.order)
 
     def open_mail_client(self):
         self.mail_service.open_blank_email(self.order.email_address)
