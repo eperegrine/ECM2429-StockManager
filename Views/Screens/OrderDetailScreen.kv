@@ -22,33 +22,20 @@
             font_size: 60
         BoxLayout:
             orientation: "horizontal"
-            BoxLayout:
-                orientation: "vertical"
+            ScrollView:
                 Label:
                     id: order_details_label
                     markup: True
                     text_size: self.size
+                    shorten: False
                     valign: "top"
                     halign: "left"
-                    size_hint_min_y: cm(7.5)
+                    size_hint_min_y: cm(9)
                     padding_x: cm(1)
                     text:
                         "[size=40][b][u]Customer[/u][/b][/size]\n" + \
                         "[b]Name[/b]: John Smith\n" + \
                         "[b]Address[/b]: 123 Fake St"
-#                Label:
-#                    id: packing_list_label
-#                    padding_x: cm(1)
-##                    size_hint_min_y: cm(3)
-#                    font_hinting: "mono"
-#                    markup: True
-#                    text_size: self.size
-#                    halign: "left"
-#                    valign: "top"
-#                    text:
-#                        "[size=40][b][u]Items[/u][/b][/size]\n" + \
-#                        "iPhone - Picked\niPad - Out of Stock\n" + \
-#                        "AirPods - Picking - \n\t\tA12\n\t\tB6"
             BoxLayout:
                 orientation: "vertical"
                 size_hint_min_y: cm(1)
