@@ -16,7 +16,7 @@ class OrderDetailScreen(Screen):
 
     order_header_label: Label
     order_details_label: Label
-    packing_list_label: Label
+    # packing_list_label: Label
 
     stock_repo: StockRepository
     print_service: PrintService
@@ -33,7 +33,7 @@ class OrderDetailScreen(Screen):
 
         self.order_header_label = self.ids.order_header_label
         self.order_details_label = self.ids.order_details_label
-        self.packing_list_label = self.ids.packing_list_label
+        # self.packing_list_label = self.ids.packing_list_label
 
         self.update_ui()
 
@@ -59,23 +59,39 @@ class OrderDetailScreen(Screen):
         if self.order is not None:
             self.set_header_text()
             self.set_details_text()
-            self.set_packing_list()
             self.order_details_label.text_size = self.order_details_label.size
         else:
             print("ORDER DETAILS SCREEN HAS NO ORDER")
 
     def set_details_text(self):
+        shipment_string = ""
+        if self.order.shipment:
+            shipment_string = f"""
+{self.sub_title("Shipment")}
+{bold("Provider")}: {self.order.shipment.provider}
+{bold("Tracking Code")}: {self.order.shipment.tracking_code}"""
+        else:
+            shipment_string = f"{bold('Shipment')}: None"
+
         self.order_details_label.text = f"""{
-self.sub_title("Customer")}
+self.sub_title("Details")}
+{bold("Status")}: {self.order.status}
+{bold("Storefront")}: {self.order.storefront}
+{shipment_string}
+
+{self.sub_title("Customer")}
 {bold("Name")}: {self.order.customer_name}
 {bold("Email")}: {self.order.email_address}
-{bold("Address")}: {self.order.address}"""
+{bold("Address")}: {self.order.address}
+
+{self.get_packing_list_text()}
+"""
 
     def set_header_text(self):
         self.order_header_label.text = \
             size(f"Order Details {bold(f'#{self.order.id:04d}')}", 70)
 
-    def set_packing_list(self):
+    def get_packing_list_text(self) -> str:
         product_list_text: str = ""
         for po in self.order.products:
             stock = []
@@ -94,7 +110,7 @@ self.sub_title("Customer")}
                 for stock_item in stock:
                     product_list_text += (" " * 4) + f"- {stock_item.quantity:3} at {stock_item.location}\n"
 
-        self.packing_list_label.text = f"""{
+        return f"""{
 self.sub_title("Items")}
 {product_list_text}
 """

@@ -16,45 +16,52 @@
             id: order_header_label
             markup: True
             text: "Order Details #1234"
+            size_hint_max_y: cm(2)
+
             font_hinting: "light"
             font_size: 60
-        Label:
-            id: order_details_label
-            markup: True
-            text_size: self.size
-            valign: "top"
-            halign: "left"
-#            size_hint_y: .3
-            padding_x: cm(1)
-            text:
-                "[size=40][b][u]Customer[/u][/b][/size]\n" + \
-                "[b]Name[/b]: John Smith\n" + \
-                "[b]Address[/b]: 123 Fake St"
         BoxLayout:
             orientation: "horizontal"
-#            size_hint_y: .1
-            size_hint_min_y: cm(1)
-            size_hint_max_y: cm(2)
-            padding: cm(1), 0
-            Button:
-                text: "Print Address Label"
-                on_press: root.print_address()
-            Button:
-                text: "Print Packing List"
-                on_press: root.print_packing_list()
-            Button:
-                text: "Open Mail Client"
-                on_press: root.open_mail_client()
-        Label:
-            id: packing_list_label
-            padding_x: cm(1)
-#            size_hint_y: .4
-            font_hinting: "mono"
-            markup: True
-            text_size: self.size
-            halign: "left"
-            valign: "top"
-            text:
-                "[size=40][b][u]Items[/u][/b][/size]\n" + \
-                "iPhone - Picked\niPad - Out of Stock\n" + \
-                "AirPods - Picking - \n\t\tA12\n\t\tB6"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    id: order_details_label
+                    markup: True
+                    text_size: self.size
+                    valign: "top"
+                    halign: "left"
+                    size_hint_min_y: cm(7.5)
+                    padding_x: cm(1)
+                    text:
+                        "[size=40][b][u]Customer[/u][/b][/size]\n" + \
+                        "[b]Name[/b]: John Smith\n" + \
+                        "[b]Address[/b]: 123 Fake St"
+#                Label:
+#                    id: packing_list_label
+#                    padding_x: cm(1)
+##                    size_hint_min_y: cm(3)
+#                    font_hinting: "mono"
+#                    markup: True
+#                    text_size: self.size
+#                    halign: "left"
+#                    valign: "top"
+#                    text:
+#                        "[size=40][b][u]Items[/u][/b][/size]\n" + \
+#                        "iPhone - Picked\niPad - Out of Stock\n" + \
+#                        "AirPods - Picking - \n\t\tA12\n\t\tB6"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_min_y: cm(1)
+                size_hint_max_y: cm(2)
+                padding: cm(1), 0
+                Button:
+                    text: "Print Address Label"
+                    on_press: root.print_address()
+                Button:
+                    text: "Print Packing List"
+                    on_press: root.print_packing_list()
+                Button:
+                    text: "Open Mail Client"
+                    on_press: root.open_mail_client()
+                Widget:
+                    size_hint_min_y: cm(1)
