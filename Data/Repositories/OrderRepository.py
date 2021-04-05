@@ -1,7 +1,9 @@
 from typing import List, Tuple
 
+from peewee import JOIN
+
 from Data.DatabaseManager import DatabaseManager
-from Data.Models import Order, Product, ProductOrder
+from Data.Models import Order, Product, ProductOrder, Shipment
 from Data.Repositories.DalModels import OrderDalModel, ProductDalModel, \
     OrderStatus, ProductOrderDalModel, PickingStatus
 
@@ -77,3 +79,41 @@ class OrderRepository:
             print("UPDATING ORDER STATUS")
             order.status = OrderStatus.Picked.value
             order.save()
+
+    def set_shipping_info(self, order_id, provider, code) -> OrderDalModel:
+        order = Order.select().join(Shipment, join_type=JOIN.LEFT_OUTER).where(Order.id == order_id).get()
+        shipment: Shipment
+        save_order = False
+        if order.shipment is not None:
+            shipment = order.shipment
+        else:
+            shipment = Shipment()
+            save_order = True
+
+        shipment.provider = provider
+        shipment.tracking_code = code
+        order.shipment = shipment
+        shipment.save()
+        if save_order:
+            order.save()
+
+        return OrderDalModel.create_from_model(order)
+
+    def _simple_status_change(self, order_id, status: OrderStatus) -> Order:
+        order = Order.get_by_id(order_id)
+        order.status = status.value
+        order.save()
+        return order
+
+    def mark_as_shipping(self, order_id):
+        self._simple_status_change(order_id, OrderStatus.Shipping)
+
+    def mark_as_shipped(self, order_id):
+        order = Order.get_by_id(order_id)
+        if order.shipment is None:
+            raise Exception("Cannot mark as shipped without shipment info")
+        order.status = OrderStatus.Shipped.value
+        order.save()
+
+    def mark_as_closed(self, order_id):
+        self._simple_status_change(order_id, OrderStatus.Closed)

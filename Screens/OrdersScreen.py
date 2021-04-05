@@ -24,8 +24,8 @@ def _create_products_cell(o: OrderDalModel) -> Label:
 
 
 def _create_action_cell(o: OrderDalModel, view: Callable, confirm: Callable, pick_stock: Callable,
-                        ship: Callable, close: Callable):
-    cell = OrdersActionTableCell(o, view, confirm, pick_stock, ship, close)
+                        ship: Callable, marked_shipped: Callable, close: Callable):
+    cell = OrdersActionTableCell(o, view, confirm, pick_stock, ship, marked_shipped, close)
     return cell
 
 
@@ -36,6 +36,7 @@ class OrdersActionTableCell(BackgroundColor):
     confirm_button: Button
     pick_stock_button: Button
     ship_button: Button
+    mark_shipped_button: Button
     close_button: Button
     order: OrderDalModel
 
@@ -43,16 +44,19 @@ class OrdersActionTableCell(BackgroundColor):
     view: Callable[[OrderDalModel], None]
     pick_stock: Callable[[OrderDalModel], None]
     ship: Callable[[OrderDalModel], None]
+    marked_shipped: Callable[[OrderDalModel], None]
     close: Callable[[OrderDalModel], None]
 
     def __init__(self, order: OrderDalModel, view: Callable, confirm: Callable, pick_stock: Callable,
-                 ship: Callable, close: Callable, **kwargs):
+                 ship: Callable, mark_shipped: Callable, close: Callable, **kwargs):
         self.order = order
         self.view = lambda: view(order)
         self.confirm = lambda: confirm(order)
         self.pick_stock = lambda: pick_stock(order)
         self.ship = lambda: ship(order)
         self.close = lambda: close(order)
+        self.mark_shipped = lambda: mark_shipped(order)
+
         super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
@@ -61,12 +65,14 @@ class OrdersActionTableCell(BackgroundColor):
         self.confirm_button = self.ids.confirm_button
         self.pick_stock_button = self.ids.pick_stock_button
         self.ship_button = self.ids.ship_button
+        self.mark_shipped_button = self.ids.mark_shipped_button
         self.close_button = self.ids.close_button
 
         self.view_button.on_press = self.view
         self.confirm_button.on_press = self.confirm
         self.pick_stock_button.on_press = self.pick_stock
         self.ship_button.on_press = self.ship
+        self.mark_shipped_button.on_press = self.mark_shipped
         self.close_button.on_press = self.close
         self.update_ui()
 
@@ -75,6 +81,7 @@ class OrdersActionTableCell(BackgroundColor):
         self._show_if(self.confirm_button, status == OrderStatus.Pending)
         self._show_if(self.pick_stock_button, status == OrderStatus.Picking)
         self._show_if(self.ship_button, status == OrderStatus.Picked)
+        self._show_if(self.mark_shipped_button, status == OrderStatus.Shipping)
         self._show_if(self.close_button, status == OrderStatus.Shipped)
         self.layout.do_layout()
 
@@ -120,7 +127,7 @@ class OrdersScreen(TableScreen):
 
     def create_action_cell(self, o):
         return _create_action_cell(o, self.view_order, self.confirm_order, self.pick_stock,
-                                   self.ship_order, self.close_order)
+                                   self.ship_order, self.mark_shipped, self.close_order)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
@@ -156,10 +163,18 @@ class OrdersScreen(TableScreen):
         def _done(provider: str, code: str):
             print(provider, code)
             # TODO: Update DB
-            self.mail_service.send_shipping_confirmation(o, provider, code)
+            self.repo.set_shipping_info(o.id, provider, code)
+            self.repo.mark_as_shipping(o.id)
+            self.on_refresh()
 
         popup = EnterShippingInfoPopup(_done)
         popup.open()
 
+    def mark_shipped(self, o: OrderDalModel):
+        self.mail_service.send_shipping_confirmation(o)
+        self.repo.mark_as_shipped(o.id)
+        self.on_refresh()
+
     def close_order(self, o: OrderDalModel):
-        pass
+        self.repo.mark_as_closed(o.id)
+        self.on_refresh()

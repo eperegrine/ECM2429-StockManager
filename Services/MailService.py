@@ -20,7 +20,9 @@ ACME corp.
 """
         )
 
-    def send_shipping_confirmation(self, o: OrderDalModel, provider: str, tracking_code: str):
+    def send_shipping_confirmation(self, o: OrderDalModel):
+        if o.shipment is None:
+            raise Exception("Shipment is None will sending shipping confirmation")
 
         product_list = ""
         for index, po in enumerate(o.products):
@@ -33,9 +35,9 @@ ACME corp.
             subject=f"ORDER #{o.id:04d} SHIPPED",
             text=f"""Hi {o.customer_name},
 
-Your order with us has been shipped via {provider}
+Your order with us has been shipped via {o.shipment.provider}
 
-Tracking code: {tracking_code}
+Tracking code: {o.shipment.tracking_code}
 
 Order Items:
 {product_list}

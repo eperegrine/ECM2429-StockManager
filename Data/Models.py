@@ -26,6 +26,12 @@ class StockItem(BaseModel):
     quantity = IntegerField()
 
 
+class Shipment(BaseModel):
+    id = AutoField()
+    provider = CharField()
+    tracking_code = CharField()
+
+
 class Order(BaseModel):
     id = AutoField()
     customer_name = CharField()
@@ -41,6 +47,7 @@ class Order(BaseModel):
     """
     status = IntegerField()
     storefront = CharField(null=True, default="webay")
+    shipment = ForeignKeyField(Shipment, null=True, unique=True, backref="order")
 
 
 class ProductOrder(BaseModel):
@@ -49,13 +56,6 @@ class ProductOrder(BaseModel):
     price = IntegerField()
     picking_status = IntegerField(default=1)
     order = ForeignKeyField(Order, backref="products")
-
-
-class Shipment(BaseModel):
-    id = AutoField()
-    order = ForeignKeyField(Order, backref="shipment")
-    provider = CharField()
-    tracking_code = CharField()
 
 
 model_list = [Product, StockItem, Order, ProductOrder, Shipment]
