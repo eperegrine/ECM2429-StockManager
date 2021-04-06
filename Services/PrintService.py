@@ -34,6 +34,10 @@ class PDF(FPDF):
 
 
 class AddressLabelPDF(FPDF):
+    """
+    Generates an address label for the package
+    """
+
     def add_order(self, order: OrderDalModel):
         self.add_page()
         self.set_xy(0.0, 0.0)
@@ -50,13 +54,17 @@ class AddressLabelPDF(FPDF):
             current_line = 23 + line_pad * index
             self.text(pad_x, current_line, line.strip())
 
-        shipping_text = f"Shipping Ref: MADEUPFORTEST"
+        tracking_code = order.shipment.tracking_code if order.shipment else "N/A"
+        provider = order.shipment.provider if order.shipment else "N/A"
+        shipping_text = f"Tracking Reference Code: {tracking_code}"
         width = self.get_string_width(shipping_text)
         half_pad = line_pad / 2
         sep_line_y = current_line + (half_pad * 1.5)
         self.line(half_pad, sep_line_y, width + pad_x * 2 + half_pad, sep_line_y)
         current_line = current_line + line_pad * 2
-        self.text(pad_x, current_line, f"Shipping Ref: MADEUPFORTEST")
+        self.text(pad_x, current_line, f"Shipped by {provider}")
+        current_line += line_pad
+        self.text(pad_x, current_line, shipping_text)
         sep_line_y = current_line + (half_pad * 1.5)
         self.line(half_pad, sep_line_y, width + pad_x * 2 + half_pad, sep_line_y)
         current_line = current_line + line_pad * 2
@@ -65,6 +73,10 @@ class AddressLabelPDF(FPDF):
 
 
 class PackingListPDF(FPDF):
+    """
+    Generates a printable packing list to be inserted into the order
+    """
+
     def add_order(self, order: OrderDalModel):
         self.add_page()
         self.set_xy(0.0, 0.0)
@@ -97,20 +109,58 @@ class PackingListPDF(FPDF):
             self.text(pad_x, current_line, f"{po.product.name} £{po.price:.2f}")
 
 
+class CancelPrintError(Exception):
+    """
+    An error indicating that a print should be cancelled
+    """
+    pass
+
+
+def printer_method(func):
+    """
+    A decorator to easily and safely handle print cancellation
+    """
+    def applicator(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except CancelPrintError:
+            print("Safely aborting print due to error")
+
+    return applicator
+
+
 class PrintService:
+    """
+    A service to handle all of the printing needs of the application
+
+    Due to difficulties with cross platform apis, this class creates a relevant pdf file and instructs the system
+    to open it allowing the user to print
+    """
 
     def _get_output_pdf_name(self, filename="printme"):
+        """
+        Finds out where to save the pdf to
+
+        Currently asks the user but could be changed to give a tmp directory before sending the file to the printer
+        """
         doc_dir = storagepath.get_documents_dir()
         reccomended_path = os.path.join(doc_dir, filename)
         path = filechooser.choose_dir(multiple=False, path=reccomended_path)
         if isinstance(path, List):
-            path = path[0]
+            if len(path) > 0:
+                path = path[0]
+            else:
+                raise CancelPrintError()
         print(path)
         output_file = os.path.join(path, filename)
         output_file += f"{''.join(str(time.time()).split('.'))}.pdf"
         return output_file
 
+    @printer_method
     def print_order_address_label(self, order: OrderDalModel):
+        """
+        Create an address label and open it
+        """
         output_file = self._get_output_pdf_name(f"Order{order.id}-AddressLabel")
         print("PRINTING ADDRESS LABEL", output_file)
         pdf = AddressLabelPDF(format="A5")
@@ -118,7 +168,11 @@ class PrintService:
         pdf.output(output_file, 'F')
         _sys_open_file(output_file)
 
+    @printer_method
     def print_order_packing_list(self, order: OrderDalModel):
+        """
+        Create an order packing list and open it
+        """
         output_file = self._get_output_pdf_name(f"Order{order.id}-PackingList")
         print("PRINTING ADDRESS LABEL", output_file)
         pdf = PackingListPDF(format="A5")
@@ -127,7 +181,11 @@ class PrintService:
         pdf.output(output_file, 'F')
         _sys_open_file(output_file)
 
+    @printer_method
     def print(self, text, filename="printme"):
+        """
+        Create a test file to verify the printing process works
+        """
         def _file_chosen(file_path):
             print(file_path)
 
