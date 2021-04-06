@@ -3,8 +3,8 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 
 import class_manager
-from Data.Repositories import StockRepository
-from Data.Repositories.DalModels import OrderDalModel, OrderStatus, PickingStatus
+from data.repositories import StockRepository
+from data.repositories.dal_models import OrderDalModel, OrderStatus, PickingStatus
 from Services import PrintService, MailService
 from Widgets.rich_text import bold, underline, size
 

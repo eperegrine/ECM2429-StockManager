@@ -6,8 +6,8 @@ from kivy.uix.widget import Widget
 from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from Screens.TableScreen import TableScreen
 from Widgets import TableField, create_label_cell, ActionsTableCell
-from Data.Repositories.DalModels import ProductDalModel
-from Data.Repositories import ProductRepository
+from data.repositories.dal_models import ProductDalModel
+from data.repositories import ProductRepository
 
 import class_manager
 

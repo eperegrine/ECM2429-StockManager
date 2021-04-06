@@ -1,5 +1,5 @@
-from Data.Models import StockItem
-from Data.Repositories.DalModels import ProductDalModel
+from data.models import StockItem
+from data.repositories.dal_models import ProductDalModel
 
 
 class StockItemDalModel:

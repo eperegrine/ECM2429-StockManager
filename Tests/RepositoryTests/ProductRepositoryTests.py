@@ -1,9 +1,9 @@
 import unittest
 
-from Data import DatabaseManager
-from Data.Models import Product
-from Data.Repositories import ProductRepository
-from Data.Repositories.DalModels import ProductDalModel
+from data import DatabaseManager
+from data.models import Product
+from data.repositories import ProductRepository
+from data.repositories.dal_models import ProductDalModel
 from .DbTestUtils import with_test_db
 
 

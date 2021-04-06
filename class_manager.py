@@ -4,8 +4,8 @@ a registry of instantiated objects
 """
 from typing import TypeVar, Generic
 
-from Data import DatabaseManager
-from Data.Repositories import StockRepository, ProductRepository, OrderRepository
+from data import DatabaseManager
+from data.repositories import StockRepository, ProductRepository, OrderRepository
 from Services import OrderFetchService, webay_storefront, OrderSyncService, PrintService, MailService
 
 _dbm = DatabaseManager()
@@ -15,7 +15,7 @@ _product_repo = ProductRepository(_dbm)
 
 registry = {
     DatabaseManager: _dbm,
-    # Repositories
+    # repositories
     StockRepository: StockRepository(_dbm),
     ProductRepository: _product_repo,
     OrderRepository: _order_repo,
@@ -38,8 +38,8 @@ def get_instance(class_type: Generic[T]) -> T:
     """
     Fetches an instance
 
-    :param class_type:
-    :return:
+    :param class_type: The type of the class to fetch
+    :return: An instance of the specified type
     """
     print("Getting instance of ", class_type)
     if class_type in registry:

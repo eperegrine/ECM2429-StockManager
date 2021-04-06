@@ -8,8 +8,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 
 import class_manager
-from Data.Repositories import OrderRepository, StockRepository
-from Data.Repositories.DalModels import OrderDalModel, ProductOrderDalModel, PickingStatus
+from data.repositories import OrderRepository, StockRepository
+from data.repositories.dal_models import OrderDalModel, ProductOrderDalModel, PickingStatus
 from Widgets import Table, TableField, create_label_cell
 
 Builder.load_file("Views/Screens/Popups/StockPickerPopup.kv")

@@ -1,19 +1,14 @@
 import peewee
 
-from Data.DatabaseManager import DatabaseManager
-from Data.Models import Product
-from Data.Repositories.DalModels import ProductDalModel
+from data.models import Product
+from data.repositories import Repository
+from data.repositories.dal_models import ProductDalModel
 
 
-class ProductRepository():
+class ProductRepository(Repository):
     """
-    Act as a buffer between the data layer and the application layer
+    A class to store, retrieve and modify products
     """
-    db_manager: DatabaseManager
-
-    def __init__(self, db_manager: DatabaseManager):
-        self.db_manager = db_manager
-        self.db_manager.ensure_initialised()
 
     def get_all_products(self) -> [ProductDalModel]:
         """
@@ -37,6 +32,14 @@ class ProductRepository():
         return product
 
     def get_or_create_by_name(self, name: str, description: str = "from api", target_stock: int = 1) -> ProductDalModel:
+        """
+        Ensures that there is a product with the specified name, if one cannot be found it is created
+
+        :param name: The name to find
+        :param description: The description of the product if created
+        :param target_stock: The target stock level if created
+        :return: The product with the name specified
+        """
         product_model: Product
         try:
             product_model = Product.get(Product.name == name)

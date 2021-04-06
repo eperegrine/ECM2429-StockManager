@@ -1,4 +1,4 @@
-from Data.Models import Shipment
+from data.models import Shipment
 
 
 class ShipmentDalModel:

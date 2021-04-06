@@ -7,8 +7,8 @@ from kivy.uix.label import Label
 
 import class_manager
 from BackgroundColor import BackgroundColor
-from Data.Repositories.DalModels import OrderDalModel, OrderStatus
-from Data.Repositories.OrderRepository import OrderRepository
+from data.repositories.dal_models import OrderDalModel, OrderStatus
+from data.repositories.order_repository import OrderRepository
 from Screens.Popups import EnterShippingInfoPopup
 from Screens.Popups.StockPickerPopup import StockPickerPopup
 from Screens.TableScreen import TableScreen

@@ -1,7 +1,7 @@
 from typing import List, Callable, Dict, Tuple
 
-from Data.Repositories import OrderRepository, ProductRepository
-from Data.Repositories.DalModels import ProductDalModel
+from data.repositories import OrderRepository, ProductRepository
+from data.repositories.dal_models import ProductDalModel
 from .Models import OrderApiModel
 from .OrderFetchService import OrderFetchService
 
@@ -11,7 +11,6 @@ ApiOrderDictionary = Dict[str, Tuple[OrderApiModel, List[Tuple[str, int]]]]
 
 def group_orders_by_name(orders) -> ApiOrderDictionary:
     order_dict: ApiOrderDictionary = {}
-    print(f"GOT {len(orders)} ORDERS: ", orders, )
     for api_order in orders:
         name = api_order.name
         product_tuple = (api_order.item_name, api_order.price)

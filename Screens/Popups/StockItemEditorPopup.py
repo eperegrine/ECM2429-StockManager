@@ -6,9 +6,9 @@ from kivy.uix.popup import Popup
 from kivy.uix.spinner import Spinner
 from kivy.uix.textinput import TextInput
 
-from Data import DatabaseManager
-from Data.Repositories import ProductRepository
-from Data.Repositories.DalModels import ProductDalModel, StockItemDalModel
+from data import DatabaseManager
+from data.repositories import ProductRepository
+from data.repositories.dal_models import ProductDalModel, StockItemDalModel
 from Widgets import MinMaxIntInput
 
 Builder.load_file("Views/Screens/Popups/StockItemEditorPopup.kv")

@@ -1,7 +1,7 @@
 from enum import Enum
 
-from Data.Models import ProductOrder
-from Data.Repositories.DalModels import ProductDalModel
+from data.models import ProductOrder
+from data.repositories.dal_models import ProductDalModel
 
 
 class PickingStatus(Enum):

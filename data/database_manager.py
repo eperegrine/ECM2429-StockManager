@@ -1,10 +1,10 @@
 import os
 
 import config
-from .Models import *
+from .models import *
 
 
-class DatabaseManager():
+class DatabaseManager:
     """
     A class to manage the database connection
     handles initialising the database
@@ -30,13 +30,12 @@ class DatabaseManager():
         """
         Empty all data from the database
         """
-        if self.db_exists() and not self._file_location == ":memory:":
+        if self.db_exists():
             ProductOrder.truncate_table()
             Shipment.truncate_table()
             Order.truncate_table()
             StockItem.truncate_table()
             Product.truncate_table()
-            # os.remove(self._file_location)
 
     def initialise_database(self):
         """

@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
-from Data.Repositories.DalModels import ProductDalModel
+from data.repositories.dal_models import ProductDalModel
 from Widgets import MinMaxIntInput
 
 Builder.load_file("Views/Screens/Popups/AddProductPopup.kv")

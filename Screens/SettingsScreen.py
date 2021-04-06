@@ -2,7 +2,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
 
 import class_manager
-from Data.DatabaseManager import DatabaseManager
+from data.database_manager import DatabaseManager
 from Services import PrintService
 
 Builder.load_file("Views/Screens/SettingsScreen.kv")
@@ -23,6 +23,6 @@ class SettingsScreen(Screen):
         self.print_service.print("Hello, World!")
 
     def generate_data(self):
-        print("Generating Data")
+        print("Generating data")
         self.db_manager.generate_test_data()
-        print("Generated Data")
+        print("Generated data")

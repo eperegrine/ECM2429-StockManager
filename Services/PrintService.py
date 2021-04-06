@@ -6,7 +6,7 @@ from typing import List
 from plyer import filechooser, storagepath
 from fpdf import FPDF
 
-from Data.Repositories.DalModels import OrderDalModel
+from data.repositories.dal_models import OrderDalModel
 
 
 def _sys_open_file(filepath):

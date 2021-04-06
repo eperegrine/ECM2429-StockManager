@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import List, Optional
 
-from Data.Models import Order
-from Data.Repositories.DalModels import ProductOrderDalModel, ShipmentDalModel
+from data.models import Order
+from data.repositories.dal_models import ProductOrderDalModel, ShipmentDalModel
 
 
 class OrderStatus(Enum):

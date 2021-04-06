@@ -2,7 +2,7 @@ import os
 
 from plyer import email as email_client
 
-from Data.Repositories.DalModels import OrderDalModel
+from data.repositories.dal_models import OrderDalModel
 
 
 class MailService:

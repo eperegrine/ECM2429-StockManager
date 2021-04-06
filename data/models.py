@@ -37,14 +37,6 @@ class Order(BaseModel):
     customer_name = CharField()
     address = TextField()
     email_address = CharField()
-    """
-    TODO: use Enum
-    https://peewee.readthedocs.io/en/latest/peewee/models.html#creating-a-custom-field
-    1 - Pending
-    2 - Picking
-    3 - Shipped
-    4 - Closed
-    """
     status = IntegerField()
     storefront = CharField(null=True, default="webay")
     shipment = ForeignKeyField(Shipment, null=True, unique=True, backref="order")

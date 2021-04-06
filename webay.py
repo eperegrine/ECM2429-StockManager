@@ -12,6 +12,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 HOST = "localhost"
 PORT = 8080
 
+
+
 N_ORDERS = 5
 
 N_PEOPLE = 10

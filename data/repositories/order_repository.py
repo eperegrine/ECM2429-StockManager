@@ -2,19 +2,13 @@ from typing import List, Tuple
 
 from peewee import JOIN
 
-from Data.DatabaseManager import DatabaseManager
-from Data.Models import Order, Product, ProductOrder, Shipment
-from Data.Repositories.DalModels import OrderDalModel, ProductDalModel, \
+from data.models import Order, Product, ProductOrder, Shipment
+from data.repositories import Repository
+from data.repositories.dal_models import OrderDalModel, ProductDalModel, \
     OrderStatus, ProductOrderDalModel, PickingStatus
 
 
-class OrderRepository:
-    db_manager: DatabaseManager
-
-    def __init__(self, db_manager: DatabaseManager):
-        self.db_manager = db_manager
-        self.db_manager.ensure_initialised()
-
+class OrderRepository(Repository):
     def get_order(self, id: int) -> OrderDalModel:
         model = self._get_order_model(id)
         return OrderDalModel.create_from_model(model)

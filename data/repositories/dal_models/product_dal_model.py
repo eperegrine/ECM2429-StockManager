@@ -1,4 +1,4 @@
-from Data.Models import Product
+from data.models import Product
 
 
 class ProductDalModel:
