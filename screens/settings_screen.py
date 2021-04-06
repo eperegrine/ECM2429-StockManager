@@ -5,7 +5,7 @@ import class_manager
 from data.database_manager import DatabaseManager
 from Services import PrintService
 
-Builder.load_file("Views/Screens/SettingsScreen.kv")
+Builder.load_file("Views/screens/SettingsScreen.kv")
 
 
 class SettingsScreen(Screen):

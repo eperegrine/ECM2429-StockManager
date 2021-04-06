@@ -12,7 +12,7 @@ from data.repositories import OrderRepository, StockRepository
 from data.repositories.dal_models import OrderDalModel, ProductOrderDalModel, PickingStatus
 from Widgets import Table, TableField, create_label_cell
 
-Builder.load_file("Views/Screens/Popups/StockPickerPopup.kv")
+Builder.load_file("Views/screens/Popups/StockPickerPopup.kv")
 
 
 class StockPickerPopup(Popup):

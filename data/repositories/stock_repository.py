@@ -77,6 +77,12 @@ class StockRepository(Repository):
         return StockItemDalModel.create_from_model(stock_item)
 
     def edit_stock(self, stock: StockItemDalModel) -> StockItemDalModel:
+        """
+        Updates the stock item quantity and location in the database
+
+        :param stock: The stock item withe the new values
+        :return: An updated stock item dal model
+        """
         model: StockItem = StockItem.get_by_id(stock.id)
         model.quantity = stock.quantity
         model.location = stock.location
@@ -84,5 +90,10 @@ class StockRepository(Repository):
         return StockItemDalModel.create_from_model(model)
 
     def remove_item(self, stock_id):
+        """
+        Removes the stock item from the database
+
+        :param id: The id of the item to remove
+        """
         model: StockItem = StockItem.get_by_id(stock_id)
         model.delete_instance()

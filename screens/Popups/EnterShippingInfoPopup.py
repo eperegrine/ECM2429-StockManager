@@ -7,7 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
-Builder.load_file("Views/Screens/Popups/EnterShippingInfoPopup.kv")
+Builder.load_file("Views/screens/Popups/EnterShippingInfoPopup.kv")
 
 
 class EnterShippingInfoPopup(Popup):

@@ -9,11 +9,11 @@ import class_manager
 from BackgroundColor import BackgroundColor
 from data.repositories import StockRepository
 from data.repositories.dal_models import StockItemDalModel
-from Screens.Popups import EditStockItemPopup, AddStockItemPopup
-from Screens.TableScreen import TableScreen
+from screens.Popups import EditStockItemPopup, AddStockItemPopup
+from screens.table_screen import TableScreen
 from Widgets import TableField, create_label_cell, ActionsTableCell
 
-Builder.load_file("Views/Screens/StockScreen.kv")
+Builder.load_file("Views/screens/StockScreen.kv")
 
 
 def _create_qty_cell(si: StockItemDalModel, modify_stock_callback: Callable[[int], bool]):

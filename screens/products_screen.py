@@ -3,15 +3,15 @@ from typing import Callable
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
-from Screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
-from Screens.TableScreen import TableScreen
+from screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
+from screens.table_screen import TableScreen
 from Widgets import TableField, create_label_cell, ActionsTableCell
 from data.repositories.dal_models import ProductDalModel
 from data.repositories import ProductRepository
 
 import class_manager
 
-Builder.load_file("Views/Screens/ProductsScreen.kv")
+Builder.load_file("Views/screens/ProductsScreen.kv")
 
 
 def _create_desc_label(text) -> Widget:

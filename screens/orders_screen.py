@@ -9,13 +9,13 @@ import class_manager
 from BackgroundColor import BackgroundColor
 from data.repositories.dal_models import OrderDalModel, OrderStatus
 from data.repositories.order_repository import OrderRepository
-from Screens.Popups import EnterShippingInfoPopup
-from Screens.Popups.StockPickerPopup import StockPickerPopup
-from Screens.TableScreen import TableScreen
+from screens.Popups import EnterShippingInfoPopup
+from screens.Popups.StockPickerPopup import StockPickerPopup
+from screens.table_screen import TableScreen
 from Services import OrderSyncService, MailService
 from Widgets import TableField, create_label_cell
 
-Builder.load_file("Views/Screens/OrdersScreen.kv")
+Builder.load_file("Views/screens/OrdersScreen.kv")
 
 
 def _create_products_cell(o: OrderDalModel) -> Label:
