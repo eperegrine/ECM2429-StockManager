@@ -8,7 +8,7 @@ from data.repositories.dal_models import OrderDalModel, OrderStatus, PickingStat
 from services import PrintService, MailService
 from widgets.rich_text import bold, underline, size
 
-Builder.load_file("Views/screens/OrderDetailScreen.kv")
+Builder.load_file("Views/Screens/OrderDetailScreen.kv")
 
 
 class OrderDetailScreen(Screen):

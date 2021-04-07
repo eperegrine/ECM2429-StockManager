@@ -11,7 +11,7 @@ from data.repositories import ProductRepository
 from data.repositories.dal_models import ProductDalModel, StockItemDalModel
 from widgets import MinMaxIntInput
 
-Builder.load_file("Views/screens/popups/StockItemEditorPopup.kv")
+Builder.load_file("Views/Screens/Popups/StockItemEditorPopup.kv")
 
 
 class StockItemEditorPopup(Popup):
