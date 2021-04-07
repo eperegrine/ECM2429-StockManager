@@ -8,8 +8,8 @@ from kivy.uix.label import Label
 import class_manager
 from data.repositories.dal_models import OrderDalModel, OrderStatus
 from data.repositories.order_repository import OrderRepository
-from screens.Popups import EnterShippingInfoPopup
-from screens.Popups.StockPickerPopup import StockPickerPopup
+from screens.popups import EnterShippingInfoPopup
+from screens.popups.stock_picker_popup import StockPickerPopup
 from screens.table_screen import TableScreen
 from Services import OrderSyncService, MailService
 from widgets import BackgroundColor, TableField, create_label_cell

@@ -11,10 +11,15 @@ from data.repositories import ProductRepository
 from data.repositories.dal_models import ProductDalModel, StockItemDalModel
 from widgets import MinMaxIntInput
 
-Builder.load_file("Views/screens/Popups/StockItemEditorPopup.kv")
+Builder.load_file("Views/screens/popups/StockItemEditorPopup.kv")
 
 
 class StockItemEditorPopup(Popup):
+    """
+    A popup to edit stock items
+
+    provides a callback returning in the form (product id, location, quantity)
+    """
     product_spinner: Spinner
     location_input: TextInput
     quantity_input: MinMaxIntInput

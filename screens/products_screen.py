@@ -3,7 +3,7 @@ from typing import Callable
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
-from screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
+from screens.popups.add_product_popup import AddProductPopup, EditProductPopup
 from screens.table_screen import TableScreen
 from widgets import TableField, create_label_cell, ActionsTableCell
 from data.repositories.dal_models import ProductDalModel

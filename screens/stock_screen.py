@@ -8,7 +8,7 @@ from kivy.uix.widget import Widget
 import class_manager
 from data.repositories import StockRepository
 from data.repositories.dal_models import StockItemDalModel
-from screens.Popups import EditStockItemPopup, AddStockItemPopup
+from screens.popups import EditStockItemPopup, AddStockItemPopup
 from screens.table_screen import TableScreen
 from widgets import TableField, create_label_cell, ActionsTableCell, BackgroundColor
 

@@ -12,10 +12,15 @@ from data.repositories import OrderRepository, StockRepository
 from data.repositories.dal_models import OrderDalModel, ProductOrderDalModel, PickingStatus
 from widgets import Table, TableField, create_label_cell
 
-Builder.load_file("Views/screens/Popups/StockPickerPopup.kv")
+Builder.load_file("Views/screens/popups/StockPickerPopup.kv")
 
 
 class StockPickerPopup(Popup):
+    """
+    A popup to handle picking stock
+
+    Updates the data automatically, a done callback is called when closed
+    """
     order_label: Label
     print_button: Button
     table: Table
