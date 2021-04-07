@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 
 import class_manager
 from data.database_manager import DatabaseManager
-from Services import PrintService
+from services import PrintService
 
 Builder.load_file("Views/screens/SettingsScreen.kv")
 

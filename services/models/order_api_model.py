@@ -1,4 +1,7 @@
 class OrderApiModel:
+    """
+    Model to match the json data from the api
+    """
     name: str
     email_address: str
     address: str

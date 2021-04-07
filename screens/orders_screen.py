@@ -11,7 +11,7 @@ from data.repositories.order_repository import OrderRepository
 from screens.popups import EnterShippingInfoPopup
 from screens.popups.stock_picker_popup import StockPickerPopup
 from screens.table_screen import TableScreen
-from Services import OrderSyncService, MailService
+from services import OrderSyncService, MailService
 from widgets import BackgroundColor, TableField, create_label_cell
 
 Builder.load_file("Views/Screens/OrdersScreen.kv")

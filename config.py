@@ -2,6 +2,9 @@ import pathlib
 import sys
 
 # SOURCE: get_datadir was sourced from https://stackoverflow.com/a/61901696
+IS_MACOS = sys.platform == "darwin"
+IS_LINUX = sys.platform == "linux"
+IS_WINDOWS = sys.platform == "win32"
 
 DEV_MODE = True
 
@@ -18,11 +21,11 @@ def get_datadir() -> pathlib.Path:
 
     home = pathlib.Path.home()
 
-    if sys.platform == "win32":
+    if IS_WINDOWS:
         return home / "AppData/Roaming"
-    elif sys.platform == "linux":
+    elif IS_LINUX:
         return home / ".local/share"
-    elif sys.platform == "darwin":
+    elif IS_MACOS:
         return home / "Library/Application Support"
 
 

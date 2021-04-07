@@ -1,8 +1,8 @@
 import unittest
 from typing import List
 
-from Services.Models import OrderApiModel
-from Services.OrderSyncService import group_orders_by_name
+from services.models import OrderApiModel
+from services.order_sync_service import group_orders_by_name
 
 
 class OrderSyncServiceTests(unittest.TestCase):

@@ -5,7 +5,7 @@ from kivy.uix.screenmanager import Screen
 import class_manager
 from data.repositories import StockRepository
 from data.repositories.dal_models import OrderDalModel, OrderStatus, PickingStatus
-from Services import PrintService, MailService
+from services import PrintService, MailService
 from widgets.rich_text import bold, underline, size
 
 Builder.load_file("Views/screens/OrderDetailScreen.kv")

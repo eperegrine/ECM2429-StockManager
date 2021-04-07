@@ -2,11 +2,14 @@ from threading import Thread
 from time import sleep
 from typing import List
 
-from .Models import OrderApiModel, Storefront
-from .Models.OrderFetchTyping import OrderSyncCallback
+from .models import OrderApiModel, Storefront
+from .models.OrderFetchTyping import OrderSyncCallback
 
 
 class OrderFetchService:
+    """
+    Handles fetching the orders from all of the storefronts
+    """
     storefronts: List[Storefront]
     delay: float
 
@@ -15,6 +18,12 @@ class OrderFetchService:
         self.storefronts = stores
 
     def fetch_orders(self, on_complete: OrderSyncCallback) -> None:
+        """
+        Starts a thread to fetch orders from all storefronts
+
+        :param on_complete: Called when all requests have completed,
+        returning the number passed and failed as well as the orders
+        """
         def _thread():
             completed: int = 0
             result: List[OrderApiModel] = []

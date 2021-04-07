@@ -2,14 +2,20 @@ from typing import List, Callable, Dict, Tuple
 
 from data.repositories import OrderRepository, ProductRepository
 from data.repositories.dal_models import ProductDalModel
-from .Models import OrderApiModel
-from .OrderFetchService import OrderFetchService
+from .models import OrderApiModel
+from .order_fetch_service import OrderFetchService
 
 # "name": ("storefront", "email", [("product", "price")])
 ApiOrderDictionary = Dict[str, Tuple[OrderApiModel, List[Tuple[str, int]]]]
 
 
-def group_orders_by_name(orders) -> ApiOrderDictionary:
+def group_orders_by_name(orders: List[OrderApiModel]) -> ApiOrderDictionary:
+    """
+    Takes a list of orders and groups them by the customer
+
+    :param orders: The list of api orders
+    :return: The order products grouped by customer
+    """
     order_dict: ApiOrderDictionary = {}
     for api_order in orders:
         name = api_order.name
@@ -23,6 +29,9 @@ def group_orders_by_name(orders) -> ApiOrderDictionary:
 
 
 class OrderSyncService:
+    """
+    Handles syncing storefront data with applications
+    """
     fetch_service: OrderFetchService
     order_repo: OrderRepository
     product_repo: ProductRepository
@@ -33,11 +42,15 @@ class OrderSyncService:
         self.product_repo = product_repo
 
     def sync(self, on_finished: Callable):
+        """
+        Update the database from the api
+
+        :param on_finished: A callback called when the sync has finished
+        """
         # This could be improved by adding batching to avoid multiple db calls
         # With multiple storefronts matching names could be an issue
         def _completed(succesful: int, failed: int, orders: List[OrderApiModel]):
             order_dict = group_orders_by_name(orders)
-            print("Made order dict", order_dict)
             for name, value in order_dict.items():
                 api_order, prod_tuple_list = value
                 products: List[Tuple[ProductDalModel, int]] = [
@@ -45,8 +58,6 @@ class OrderSyncService:
                 ]
                 order = self.order_repo.create_order(name, api_order.email_address, api_order.address,
                                                      api_order.storefront, products)
-                print("Order created", order)
-            print("SYNCED ORDERS")
             on_finished()
 
         self.fetch_service.fetch_orders(_completed)

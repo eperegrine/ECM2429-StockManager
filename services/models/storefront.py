@@ -1,10 +1,13 @@
 from kivy.network.urlrequest import UrlRequest
 
-from .OrderApiModel import OrderApiModel
+from .order_api_model import OrderApiModel
 from .OrderFetchTyping import OrderFetcher, OrderFetchSuccessCallback, OrderFetchErrorCallback
 
 
 class Storefront:
+    """
+    A model representing a storefront
+    """
     name: str
     fetch_orders: OrderFetcher
 
