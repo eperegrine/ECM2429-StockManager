@@ -1,7 +1,7 @@
 from kivy.network.urlrequest import UrlRequest
 
 from .order_api_model import OrderApiModel
-from .OrderFetchTyping import OrderFetcher, OrderFetchSuccessCallback, OrderFetchErrorCallback
+from .order_fetch_typing import OrderFetcher, OrderFetchSuccessCallback, OrderFetchErrorCallback
 
 
 class Storefront:

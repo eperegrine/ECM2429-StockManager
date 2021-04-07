@@ -3,7 +3,7 @@ from time import sleep
 from typing import List
 
 from .models import OrderApiModel, Storefront
-from .models.OrderFetchTyping import OrderSyncCallback
+from .models.order_fetch_typing import OrderSyncCallback
 
 
 class OrderFetchService:
