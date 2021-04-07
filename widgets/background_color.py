@@ -7,7 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.widget import Widget
 
-kivy.app.Builder.load_file("Views/BackgroundColor.kv")
+kivy.app.Builder.load_file("Views/Widgets/BackgroundColor.kv")
 
 
 class BackgroundColor(Widget):

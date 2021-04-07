@@ -6,12 +6,11 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
 import class_manager
-from BackgroundColor import BackgroundColor
 from data.repositories import StockRepository
 from data.repositories.dal_models import StockItemDalModel
 from screens.Popups import EditStockItemPopup, AddStockItemPopup
 from screens.table_screen import TableScreen
-from Widgets import TableField, create_label_cell, ActionsTableCell
+from widgets import TableField, create_label_cell, ActionsTableCell, BackgroundColor
 
 Builder.load_file("Views/screens/StockScreen.kv")
 

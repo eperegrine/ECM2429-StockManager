@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, List, Tuple
 
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -6,12 +6,18 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 
-from BackgroundColor import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
+from .background_color import BackgroundBoxLayout, BackgroundColor, BackgroundLabel
 
 Builder.load_file("Views/Widgets/Table.kv")
 
 
 def create_label_cell(text) -> Widget:
+    """
+    A helper method to easily create a simple text cell for the table
+
+    :param text: The text to display
+    :return:
+    """
     lbl = BackgroundLabel()
     lbl.halign = "center"
     lbl.valign = "center"
@@ -21,33 +27,54 @@ def create_label_cell(text) -> Widget:
 
 
 class TableField:
+    """
+    Represents a field modeled in a table
+    """
     label: str = "Label"
     weight: float
     _get_field_widget: Callable[[object], Widget]
 
-    def __init__(self, label, weight, get_field):
+    def __init__(self, label: str, weight: float, get_field: Callable[[object], Widget]):
+        """
+        Initialise table field
+        :param label: The name of the field
+        :param weight: The width sizing percentage
+        :param get_field: A method to create the table cell widget
+        """
         self.label = label
         self.weight = weight
         self._get_field_widget = get_field
 
     def create_label(self) -> Label:
+        """
+        Create the header label
+        :return: A label widget for the table header
+        """
         lbl = Label()
         lbl.text = self.label
         lbl.size_hint_x = self.weight
         return lbl
 
     def create_field(self, data, row_height) -> Widget:
+        """
+        Create the widget to be used in the table cell
+
+        :param data: The row data
+        :param row_height: The height of the row
+        :return: A table cell widget correctly sized for the table
+        """
         w = self._get_field_widget(data)
         w.size_hint_x = self.weight
         w.size_hint_max_y = row_height
         return w
 
 
-even_row_colour_1 = (70 / 255, 70 / 255, 100 / 255, 1)
-even_row_colour_2 = (75 / 255, 75 / 255, 100 / 255, 1)
+KivyColor = tuple[float, float, float, int]
+even_row_colour_1: KivyColor = (70 / 255, 70 / 255, 100 / 255, 1)
+even_row_colour_2: KivyColor = (75 / 255, 75 / 255, 100 / 255, 1)
 
-odd_row_colour_1 = (50 / 255, 50 / 255, 100 / 255, 1)
-odd_row_colour_2 = (55 / 255, 55 / 255, 100 / 255, 1)
+odd_row_colour_1: KivyColor = (50 / 255, 50 / 255, 100 / 255, 1)
+odd_row_colour_2: KivyColor = (55 / 255, 55 / 255, 100 / 255, 1)
 
 
 class Table(Widget):
@@ -55,8 +82,8 @@ class Table(Widget):
     table_body: BoxLayout
     scroll_view: ScrollView
 
-    headers: [TableField]
-    data: [object] = None
+    headers: List[TableField]
+    data: List[object] = None
 
     row_height: float = .1
 
@@ -66,6 +93,12 @@ class Table(Widget):
         self.scroll_view = self.ids['scroll_view']
 
     def setup(self, headers: [TableField], data: [object]):
+        """
+        Initialise the table
+
+        :param headers: The fields represented in the table
+        :param data: the dat within the table
+        """
         self.headers = headers
 
         for header in headers:
@@ -74,6 +107,11 @@ class Table(Widget):
         self.set_data(data)
 
     def set_data(self, data: [object]):
+        """
+        Modify the data in the table
+
+        :param data: The data
+        """
         self.table_body.clear_widgets()
 
         for index, row in enumerate(data):
@@ -82,11 +120,19 @@ class Table(Widget):
         self.data = [*data]
         self.update_sizing()
 
-    def set_row_height(self, height):
+    def set_row_height(self, height: float):
+        """
+        Chnage the height of the table rows
+
+        :param height: The height to change to
+        """
         self.row_height = height
         self.update_sizing()
 
-    def update_sizing(self, old_size=None):
+    def update_sizing(self):
+        """
+        Update the size of rows and the scroll_view
+        """
         height_hint = self.row_height * len(self.data)
         self.table_body.size_hint_y = height_hint
         self.scroll_view.do_scroll_y = height_hint > 1
@@ -94,6 +140,13 @@ class Table(Widget):
         self.scroll_view.update_from_scroll()
 
     def _add_row(self, row_data, even_row=False) -> Widget:
+        """
+        Create a row widget and add it to the table
+
+        :param row_data: The data within the row
+        :param even_row: Whether this row is even or odd
+        :return: The resulting row widget
+        """
         row = BackgroundBoxLayout()
         row.orientation = "horizontal"
         row.size_hint_y = self.row_height

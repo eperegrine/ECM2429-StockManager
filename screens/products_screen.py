@@ -5,13 +5,13 @@ from kivy.uix.widget import Widget
 
 from screens.Popups.AddProductPopup import AddProductPopup, EditProductPopup
 from screens.table_screen import TableScreen
-from Widgets import TableField, create_label_cell, ActionsTableCell
+from widgets import TableField, create_label_cell, ActionsTableCell
 from data.repositories.dal_models import ProductDalModel
 from data.repositories import ProductRepository
 
 import class_manager
 
-Builder.load_file("Views/screens/ProductsScreen.kv")
+Builder.load_file("Views/Screens/ProductsScreen.kv")
 
 
 def _create_desc_label(text) -> Widget:

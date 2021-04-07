@@ -19,18 +19,6 @@ class FloatInput(TextInput):
         return super(FloatInput, self).insert_text(s, from_undo=from_undo)
 
 
-# TODO: implement min max
-# if substring.isdigit():
-#     num = int(substring)
-# else:
-#     digits = [c for c in substring if c.isdigit()]
-#     num = int("".join(digits)) if len(digits) > 0 else 0
-#
-# if self.min is not None and num < self.min:
-#     num = self.min
-# elif self.max is not None and num > self.max:
-#     num = self.max
-
 class IntInput(TextInput):
     """
     A input field that is limited to only numbers

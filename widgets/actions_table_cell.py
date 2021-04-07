@@ -3,7 +3,7 @@ from typing import Callable
 from kivy.lang import Builder
 from kivy.uix.button import Button
 
-from BackgroundColor import BackgroundColor
+from .background_color import BackgroundColor
 
 Builder.load_file("Views/Widgets/ActionsTableCell.kv")
 

@@ -3,7 +3,7 @@ from typing import Optional
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
 
-from Widgets import Table, TableField
+from widgets import Table, TableField
 
 
 class TableScreen(Screen):

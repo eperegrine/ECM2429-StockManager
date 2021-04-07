@@ -10,7 +10,7 @@ from kivy.uix.widget import Widget
 import class_manager
 from data.repositories import OrderRepository, StockRepository
 from data.repositories.dal_models import OrderDalModel, ProductOrderDalModel, PickingStatus
-from Widgets import Table, TableField, create_label_cell
+from widgets import Table, TableField, create_label_cell
 
 Builder.load_file("Views/screens/Popups/StockPickerPopup.kv")
 

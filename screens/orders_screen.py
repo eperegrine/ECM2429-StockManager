@@ -6,16 +6,15 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 
 import class_manager
-from BackgroundColor import BackgroundColor
 from data.repositories.dal_models import OrderDalModel, OrderStatus
 from data.repositories.order_repository import OrderRepository
 from screens.Popups import EnterShippingInfoPopup
 from screens.Popups.StockPickerPopup import StockPickerPopup
 from screens.table_screen import TableScreen
 from Services import OrderSyncService, MailService
-from Widgets import TableField, create_label_cell
+from widgets import BackgroundColor, TableField, create_label_cell
 
-Builder.load_file("Views/screens/OrdersScreen.kv")
+Builder.load_file("Views/Screens/OrdersScreen.kv")
 
 
 def _create_products_cell(o: OrderDalModel) -> Label:
