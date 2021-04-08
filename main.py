@@ -15,7 +15,7 @@ if config.DEV_MODE:
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.DEBUG)
 
-Builder.load_file("main.kv")
+Builder.load_file("Views/main.kv")
 
 
 class MainApp(Widget):
