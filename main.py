@@ -1,3 +1,5 @@
+import sys
+
 from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -86,4 +88,5 @@ class StockManagerApp(App):
 
 
 if __name__ == '__main__':
+    print("SYSTEM PLATFORM: " + sys.platform)
     StockManagerApp().run()

@@ -63,7 +63,7 @@ class MinMaxIntInput(IntInput):
         self.validate()
 
     def validate(self):
-        if len(self.text) == 0:
+        if len(self.text) == 0 or self.text == "-":
             self.on_new_value(None)
             return
         num = int(self.text)

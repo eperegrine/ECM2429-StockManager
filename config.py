@@ -31,13 +31,19 @@ def get_datadir() -> pathlib.Path:
 
 # File locations
 my_datadir = get_datadir() / "stock-manager"
+print_folder = my_datadir / "prints"
 app_dir = pathlib.Path(__file__).parents[0]
 _db_filename = "stock_manager.db"
 database_store = app_dir / _db_filename if DEV_MODE else my_datadir / _db_filename
 sample_data_file_location = app_dir / "SQLScripts" / "SampleData.sql"
 
-# Enaure that the path exists
-try:
-    my_datadir.mkdir(parents=True)
-except FileExistsError:
-    pass
+
+def ensure_dir_exists(folder: pathlib.Path):
+    try:
+        folder.mkdir(parents=True)
+    except FileExistsError:
+        pass
+
+
+ensure_dir_exists(my_datadir)
+ensure_dir_exists(print_folder)

@@ -2,6 +2,7 @@ import os
 import subprocess
 
 from config import IS_WINDOWS, IS_MACOS, IS_LINUX
+
 try:
     from urllib.parse import quote
 except ImportError:
@@ -10,7 +11,7 @@ except ImportError:
 from data.repositories.dal_models import OrderDalModel
 
 
-def send(recipient: str=None, subject: str =None, text: str=None):
+def send(recipient: str = None, subject: str = None, text: str = None):
     """
     This method has been taken and modified from plyer source code - there is a build issue with plyer so I copied it
     to ensure the built version works
@@ -41,7 +42,6 @@ def send(recipient: str=None, subject: str =None, text: str=None):
         subprocess.Popen(["open", uri])
     elif IS_LINUX:
         subprocess.Popen(["xdg-open", uri])
-
 
 
 class MailService:

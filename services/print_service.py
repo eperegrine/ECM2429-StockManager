@@ -6,12 +6,13 @@ from typing import List
 from plyer import filechooser, storagepath
 from fpdf import FPDF
 
+import config
 from data.repositories.dal_models import OrderDalModel
 
 
 def _sys_open_file(filepath):
     """
-    Open a file using system default app
+    Open a file using system default app, on windows try to print
 
     Source: https://stackoverflow.com/a/435669/3109126
 
@@ -143,9 +144,14 @@ class PrintService:
 
         Currently asks the user but could be changed to give a tmp directory before sending the file to the printer
         """
-        doc_dir = storagepath.get_documents_dir()
-        reccomended_path = os.path.join(doc_dir, filename)
-        path = filechooser.choose_dir(multiple=False, path=reccomended_path)
+
+        if config.IS_WINDOWS:
+            # Quick change to avoid crashes when built
+            path = str(config.my_datadir / "prints")
+        else:
+            doc_dir = storagepath.get_documents_dir()
+            recommended_path = os.path.join(doc_dir, filename)
+            path = filechooser.choose_dir(multiple=False, path=recommended_path)
         if isinstance(path, List):
             if len(path) > 0:
                 path = path[0]
