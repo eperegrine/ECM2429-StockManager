@@ -12,7 +12,7 @@ from screens.popups import EditStockItemPopup, AddStockItemPopup
 from screens.table_screen import TableScreen
 from widgets import TableField, create_label_cell, ActionsTableCell, BackgroundColor
 
-Builder.load_file("Views/screens/StockScreen.kv")
+Builder.load_file("Views/Screens/StockScreen.kv")
 
 
 def _create_qty_cell(si: StockItemDalModel, modify_stock_callback: Callable[[int], bool]):
